@@ -15,7 +15,7 @@ Supported data structures so far:
 
 ```typescript
 import assert from 'assert'
-import { proxifyVector3 } from 'SoA-three'
+import { proxifyVector3 } from '@webecs/SoA-three'
 import * as THREE from 'three'
 
 const n = 100
@@ -56,7 +56,7 @@ assert(mesh.position.z === 6) // true
 
 ```typescript
 import assert from 'assert'
-import { proxifyVector3 } from 'SoA-three'
+import { proxifyVector3 } from '@webecs/SoA-three'
 import * as THREE from 'three'
 
 const n = 100
