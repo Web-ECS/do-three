@@ -5,6 +5,7 @@ A library to help integrate Three.js with SoA data.
 ## SoA Example
 
 ```typescript
+import assert from 'assert'
 import { proxifyVector3 } from 'SoA-three/SoA'
 
 const n = 100
@@ -36,6 +37,7 @@ assert(PositionSoA.z[id] === 3) // true
 ## AoS Example
 
 ```typescript
+import assert from 'assert'
 import { proxifyVector3 } from 'SoA-three/AoS'
 
 const n = 100
