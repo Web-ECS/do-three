@@ -1,6 +1,6 @@
 # Structure of Array + Three.js Integrations
 
-A library to help with integrate Three.js with SoA data.
+A library to help integrate Three.js with SoA data.
 
 ##
 
