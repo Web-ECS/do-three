@@ -7,6 +7,7 @@ A library to help integrate Three.js with SoA data.
 ```typescript
 import assert from 'assert'
 import { proxifyVector3 } from 'SoA-three'
+import * as THREE from 'three'
 
 const n = 100
 const PositionSoA = {
@@ -47,6 +48,7 @@ assert(mesh.position.z === 6) // true
 ```typescript
 import assert from 'assert'
 import { proxifyVector3 } from 'SoA-three'
+import * as THREE from 'three'
 
 const n = 100
 const stride = 3
