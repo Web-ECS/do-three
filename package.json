@@ -4,11 +4,15 @@
   "description": "SoA + Three.js integrations",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json"
   },
   "author": "Nathaniel Martin",
   "license": "MPL-2.0",
   "dependencies": {
     "three": "^0.137.5"
+  },
+  "devDependencies": {
+    "@types/three": "^0.137.0"
   }
 }
