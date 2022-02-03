@@ -41,7 +41,7 @@ import { proxifyVector3 } from 'SoA-three/AoS'
 const n = 100
 const stride = 3
 const PositionStore = new Float32Array(n*stride)
-const PositionAoS = Array(n).fill(PositionStore).map((store,i) => store.subarray(i*stride, i*stride+3))
+const PositionAoS = Array(n).fill(PositionStore).map((store,i) => store.subarray(i*stride, i*stride+stride))
 
 const id = 0
 const mesh = new THREE.Mesh(
