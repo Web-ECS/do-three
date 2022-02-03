@@ -32,6 +32,14 @@ assert(PositionSoA.x[id] === 1) // true
 assert(PositionSoA.y[id] === 2) // true
 assert(PositionSoA.z[id] === 3) // true
 
+PositionSoA.x[id] = 4
+PositionSoA.y[id] = 5
+PositionSoA.z[id] = 6
+
+assert(mesh.position.x === 4) // true
+assert(mesh.position.y === 5) // true
+assert(mesh.position.z === 6) // true
+
 ```
 
 ## AoS Example
@@ -61,5 +69,13 @@ mesh.position.z = 3
 assert(PositionAoS[id][0] === 1) // true
 assert(PositionAoS[id][1] === 2) // true
 assert(PositionAoS[id][2] === 3) // true
+
+PositionAoS[id][0] = 4
+PositionAoS[id][1] = 5
+PositionAoS[id][2] = 6
+
+assert(mesh.position.x === 4) // true
+assert(mesh.position.y === 5) // true
+assert(mesh.position.z === 6) // true
 
 ```
