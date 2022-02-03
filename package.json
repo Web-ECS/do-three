@@ -4,7 +4,7 @@
   "description": "SoA + Three.js integrations",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-mocha test/**/*.test.ts",
     "build": "tsc -p tsconfig.json"
   },
   "author": "Nathaniel Martin",
@@ -18,6 +18,6 @@
     "@types/three": "^0.137.0",
     "mocha": "^9.2.0",
     "ts-mocha": "^9.0.2",
-    "tsconfig-paths": "^3.12.0"
+    "typescript": "^4.5.5"
   }
 }
