@@ -6,7 +6,7 @@ A library to help integrate Three.js with SoA data.
 
 ```typescript
 import assert from 'assert'
-import { proxifyVector3 } from 'SoA-three/SoA'
+import { proxifyVector3 } from 'SoA-three'
 
 const n = 100
 const PositionSoA = {
@@ -38,12 +38,13 @@ assert(PositionSoA.z[id] === 3) // true
 
 ```typescript
 import assert from 'assert'
-import { proxifyVector3 } from 'SoA-three/AoS'
+import { proxifyVector3 } from 'SoA-three'
 
 const n = 100
 const stride = 3
-const PositionStore = new Float32Array(n*stride)
-const PositionAoS = Array(n).fill(PositionStore).map((store,i) => store.subarray(i*stride, i*stride+stride))
+const PositionAoS = Array(n)
+  .fill(new Float32Array(n*stride))
+  .map((store,i) => store.subarray(i*stride, i*stride+stride))
 
 const id = 0
 const mesh = new THREE.Mesh(
