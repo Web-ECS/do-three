@@ -2,6 +2,15 @@
 
 A library to help integrate Three.js with SoA data.
 
+## Features
+
+Supported data structures so far:
+|||
+|-|-|
+|Vector2|Quaternion|
+|Vector3|Matrix3|
+|Vector4|Matrix4|
+
 ## SoA Example
 
 ```typescript
