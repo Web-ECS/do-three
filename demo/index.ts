@@ -41,6 +41,10 @@ const update = () => {
   Transform.position.y[mesh.eid] += Math.sin(t) * delta * 100
   Transform.position.z[mesh.eid] += Math.sin(t) * delta * 100
 
+  Transform.scale.x[mesh.eid] += Math.sin(t) * delta
+  Transform.scale.y[mesh.eid] += Math.sin(t) * delta
+  Transform.scale.z[mesh.eid] += Math.sin(t) * delta
+
   Transform.rotation.x[mesh.eid] += 0.005
   Transform.rotation.y[mesh.eid] += 0.005
   Transform.rotation.z[mesh.eid] += 0.005
