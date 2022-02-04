@@ -1,4 +1,4 @@
-# Structure of Array + Three.js Integrations
+# Data-oriented Three.js Integrations
 
 A library to help integrate Three.js with data-oriented design structures.
 
