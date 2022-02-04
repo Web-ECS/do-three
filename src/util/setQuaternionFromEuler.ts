@@ -1,6 +1,8 @@
 // http://www.mathworks.com/matlabcentral/fileexchange/20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/content/SpinCalc.m
 
-import { QuaternionSoA, Vector3SoA } from "../types"
+import { QuaternionSoA } from "../proxy/Quaternion"
+import { Vector3SoA } from "../proxy/Vector3"
+
 const { sin, cos } = Math
 
 export const setQuaternionFromEulerSoA = (quaternion: QuaternionSoA, rotation: Vector3SoA, eid: number, order: string = 'XYZ') => {

@@ -20,7 +20,7 @@ describe('Vector2', () => {
       const vector2SoA = createVector2SoA()
       const vector2 = new Vector2(1,2)
 
-      proxifyVector2(vector2SoA, id, vector2)
+      proxifyVector2(vector2, vector2SoA, id)
 
       // inherits initial values
       assert(vector2SoA.x[id] === 1)
@@ -68,7 +68,7 @@ describe('Vector2', () => {
       const vector2AoS = createVector2AoS()
       const vector2 = new Vector2(1,2)
 
-      proxifyVector2(vector2AoS, id, vector2)
+      proxifyVector2(vector2, vector2AoS[id])
 
       // inherits initial values
       assert(vector2AoS[id][0] === 1)
@@ -90,7 +90,7 @@ describe('Vector2', () => {
     it('should create a new proxified Vector2', () => {
       const id = 1
       const vector2AoS = createVector2AoS()
-      const vector2 = createVector2Proxy(vector2AoS, id).set(1,2)
+      const vector2 = createVector2Proxy(vector2AoS[id]).set(1,2)
 
       // inherits initial values
       assert(vector2AoS[id][0] === 1)

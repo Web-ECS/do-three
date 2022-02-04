@@ -4,8 +4,8 @@
   "description": "SoA + Three.js integrations",
   "main": "index.js",
   "scripts": {
-    "test": "ts-mocha -p tsconfig.test.json ./test/**/*.test.ts",
-    "build": "tsc -p tsconfig.build.json",
+    "test": "ts-mocha -p tsconfig.json ./test/**/*.test.ts",
+    "build": "tsc -p tsconfig-build.json",
     "demo": "webpack --config ./demo/webpack.config.js && http-serve ./demo"
   },
   "author": "Nathaniel Martin",

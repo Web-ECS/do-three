@@ -1,4 +1,4 @@
-import { TransformSoA } from "../src/types"
+import { TransformSoA } from "../src/types/TransformSoA"
 
 const n = 100
 export const Transform: TransformSoA = {
@@ -11,6 +11,7 @@ export const Transform: TransformSoA = {
     x: new Float32Array(n),
     y: new Float32Array(n),
     z: new Float32Array(n),
+    order: new Uint8Array(n),
   },
   scale: {
     x: new Float32Array(n),

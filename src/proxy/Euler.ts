@@ -1,23 +1,25 @@
-import { Vector4 } from 'three'
+import { Euler } from 'three'
 
 const { defineProperties } = Object
 
-export type Vector4SoA = {
+export type EulerSoA = {
   x: Float32Array
   y: Float32Array
   z: Float32Array
-  w: Float32Array
+  order: Uint8Array
 }
 
-export function proxifyVector4 (vector4: Vector4, store: Vector4SoA, entity: number): Vector4
-export function proxifyVector4 (vector4: Vector4, store: Float32Array): Vector4
-export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4SoA, entity?: number): Vector4 {
+const EulerOrder = [ 'XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX' ]
+
+export function proxifyEuler (euler: Euler, store: EulerSoA, entity: number): Euler
+export function proxifyEuler (euler: Euler, store: Float32Array): Euler
+export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, entity?: number): Euler {
   if (ArrayBuffer.isView(store)) {
-    store[0] = vector4.x
-    store[1] = vector4.y
-    store[2] = vector4.z
-    store[3] = vector4.w
-    return defineProperties(vector4, {
+    store[0] = euler.x
+    store[1] = euler.y
+    store[2] = euler.z
+    store[3] = EulerOrder.indexOf(euler.order)
+    return defineProperties(euler, {
       _eid: { value: entity },
       _store: { value: store },
       x: {
@@ -25,6 +27,8 @@ export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4S
           return this._store[0]
         },
         set(n) {
+          (euler as any)._x = n
+          euler._onChangeCallback()
           return (this._store[0] = n)
         }
       },
@@ -33,6 +37,8 @@ export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4S
           return this._store[1]
         },
         set(n) {
+          (euler as any)._y = n
+          euler._onChangeCallback()
           return (this._store[1] = n)
         }
       },
@@ -41,25 +47,29 @@ export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4S
           return this._store[2]
         },
         set(n) {
+          (euler as any)._z = n
+          euler._onChangeCallback()
           return (this._store[2] = n)
         }
       },
-      w: {
+      order: {
         get() {
           return this._store[3]
         },
         set(n) {
+          (euler as any)._order = EulerOrder[n]
+          euler._onChangeCallback()
           return (this._store[3] = n)
         }
       },
     })
   } else {
     if (entity === undefined) throw new Error('entity is undefined, must be defined when passing SoA object')
-    store.x[entity] = vector4.x
-    store.y[entity] = vector4.y
-    store.z[entity] = vector4.z
-    store.w[entity] = vector4.w
-    return defineProperties(vector4, {
+    store.x[entity] = euler.x
+    store.y[entity] = euler.y
+    store.z[entity] = euler.z
+    store.order[entity] = EulerOrder.indexOf(euler.order)
+    return defineProperties(euler, {
       _eid: { value: entity },
       _store: { value: store },
       x: {
@@ -86,25 +96,25 @@ export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4S
           return (this._store.z[this._eid] = n)
         }
       },
-      w: {
+      order: {
         get() {
-          return this._store.w[this._eid]
+          return this._store.order[this._eid]
         },
         set(n) {
-          return (this._store.w[this._eid] = n)
+          return (this._store.order[this._eid] = n)
         }
       },
     })
   }
 }
 
-export function createVector4Proxy (store: Float32Array): Vector4
-export function createVector4Proxy (store: Vector4SoA, entity: number): Vector4
-export function createVector4Proxy (store: Float32Array | Vector4SoA, entity?: number): Vector4 {
+export function createEulerProxy (store: Float32Array): Euler
+export function createEulerProxy (store: EulerSoA, entity: number): Euler
+export function createEulerProxy (store: Float32Array | EulerSoA, entity?: number): Euler {
   if (ArrayBuffer.isView(store)) {
-    return proxifyVector4(new Vector4(), store as Float32Array)
+    return proxifyEuler(new Euler(), store as Float32Array)
   } else {
     if (entity === undefined) throw new Error('entity is undefined, must be defined when passing SoA object')
-    return proxifyVector4(new Vector4(), store as Vector4SoA, entity)
+    return proxifyEuler(new Euler(), store as EulerSoA, entity)
   }
 }

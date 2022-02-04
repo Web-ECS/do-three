@@ -32,7 +32,7 @@ const mesh = new THREE.Mesh(
   new THREE.MeshBasicMaterial( { wireframe: true } )
 )
 
-proxifyVector3(PositionSoA, id, mesh.position)
+proxifyVector3(mesh.position, PositionSoA, id)
 
 mesh.position.x = 1
 mesh.position.y = 2
@@ -71,7 +71,7 @@ const mesh = new THREE.Mesh(
   new THREE.MeshBasicMaterial( { wireframe: true } )
 )
 
-proxifyVector3(PositionAoS, id, mesh.position)
+proxifyVector3(mesh.position, PositionAoS[id])
 
 mesh.position.x = 1
 mesh.position.y = 2

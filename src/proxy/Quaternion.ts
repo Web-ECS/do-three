@@ -2,22 +2,24 @@ import { Quaternion } from 'three'
 
 const { defineProperties } = Object
 
-type QuaternionSoA = {
+export type QuaternionSoA = {
   x: Float32Array
   y: Float32Array
   z: Float32Array
   w: Float32Array
 }
 
-export const proxifyQuaternion = (store: Float32Array[] | QuaternionSoA, entity: number, quaternion: Quaternion): Quaternion => {
-  if (Array.isArray(store)) {
-    store[entity][0] = quaternion.x
-    store[entity][1] = quaternion.y
-    store[entity][2] = quaternion.z
-    store[entity][3] = quaternion.w
+export function proxifyQuaternion (quaternion: Quaternion, store: QuaternionSoA, entity: number): Quaternion
+export function proxifyQuaternion (quaternion: Quaternion, store: Float32Array): Quaternion
+export function proxifyQuaternion (quaternion: Quaternion, store: Float32Array | QuaternionSoA, entity?: number): Quaternion {
+  if (ArrayBuffer.isView(store)) {
+    store[0] = quaternion.x
+    store[1] = quaternion.y
+    store[2] = quaternion.z
+    store[3] = quaternion.w
     return defineProperties(quaternion, {
       _eid: { value: entity },
-      _store: { value: store[entity] },
+      _store: { value: store },
       _x: {
         get() {
           return this._store[0]
@@ -49,13 +51,15 @@ export const proxifyQuaternion = (store: Float32Array[] | QuaternionSoA, entity:
         set(n) {
           return (this._store[3] = n)
         }
-      }
+      },
     })
   } else {
+    if (entity === undefined) throw new Error('entity is undefined, must be defined when passing SoA object')
     store.x[entity] = quaternion.x
     store.y[entity] = quaternion.y
     store.z[entity] = quaternion.z
     store.w[entity] = quaternion.w
+    quaternion
     return defineProperties(quaternion, {
       _eid: { value: entity },
       _store: { value: store },
@@ -90,10 +94,18 @@ export const proxifyQuaternion = (store: Float32Array[] | QuaternionSoA, entity:
         set(n) {
           return (this._store.w[this._eid] = n)
         }
-      }
+      },
     })
   }
 }
 
-export const createQuaternionProxy = (store: Float32Array[] | QuaternionSoA, entity: number): Quaternion =>
-  proxifyQuaternion(store, entity, new Quaternion())
+export function createQuaternionProxy (store: Float32Array): Quaternion
+export function createQuaternionProxy (store: QuaternionSoA, entity: number): Quaternion
+export function createQuaternionProxy (store: Float32Array | QuaternionSoA, entity?: number): Quaternion {
+  if (ArrayBuffer.isView(store)) {
+    return proxifyQuaternion(new Quaternion(), store as Float32Array)
+  } else {
+    if (entity === undefined) throw new Error('entity is undefined, must be defined when passing SoA object')
+    return proxifyQuaternion(new Quaternion(), store as QuaternionSoA, entity)
+  }
+}

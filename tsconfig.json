@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es2017",
-    "rootDir": "test",
+    /*"rootDir": "test",*/
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,

@@ -22,7 +22,7 @@ describe('Quaternion', () => {
       const quaternionSoA = createQuaternionSoA()
       const quaternion = new Quaternion(1,2,3,4)
   
-      proxifyQuaternion(quaternionSoA, id, quaternion)
+      proxifyQuaternion(quaternion, quaternionSoA, id)
   
       // inherits initial values
       assert(quaternionSoA.x[id] === 1)
@@ -90,7 +90,7 @@ describe('Quaternion', () => {
       const quaternionAoS = createQuaternionAoS()
       const quaternion = new Quaternion(1,2,3,4)
 
-      proxifyQuaternion(quaternionAoS, id, quaternion)
+      proxifyQuaternion(quaternion, quaternionAoS[id])
 
       // inherits initial values
       assert(quaternionAoS[id][0] === 1)
@@ -122,7 +122,7 @@ describe('Quaternion', () => {
     it('should create a new proxified Quaternion', () => {
       const id = 1
       const quaternionAoS = createQuaternionAoS()
-      const quaternion = createQuaternionProxy(quaternionAoS, id).set(1,2,3,4)
+      const quaternion = createQuaternionProxy(quaternionAoS[id]).set(1,2,3,4)
 
       // inherits initial values
       assert(quaternionAoS[id][0] === 1)

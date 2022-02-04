@@ -20,7 +20,7 @@ describe('Matrix4', () => {
         13, 14, 15, 16,
       )
 
-      proxifyMatrix4(matrix4AoS, id, matrix4)
+      proxifyMatrix4(matrix4, matrix4AoS[id])
 
       // inherits initial values
       assert(matrix4AoS[id][0] === 1)
@@ -84,14 +84,14 @@ describe('Matrix4', () => {
     it('should create a new proxified Matrix4', () => {
       const id = 1
       const matrix4AoS = createMatrix4AoS()
-      const matrix4 = createMatrix4Proxy(matrix4AoS, id).set(
+      const matrix4 = createMatrix4Proxy(matrix4AoS[id]).set(
         1, 2, 3, 4,
         5, 6, 7, 8,
         9, 10, 11, 12,
         13, 14, 15, 16,
       )
 
-      proxifyMatrix4(matrix4AoS, id, matrix4)
+      proxifyMatrix4(matrix4, matrix4AoS[id])
 
       // inherits initial values
       assert(matrix4AoS[id][0] === 1)

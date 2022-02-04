@@ -1,5 +1,4 @@
-export { createMatrix3Proxy, proxifyMatrix3 } from "./proxy/Matrix3";
-export { createMatrix4Proxy, proxifyMatrix4 } from "./proxy/Matrix4";
+export { createMatrix3Proxy, createMatrix4Proxy, proxifyMatrix3, proxifyMatrix4 } from "./proxy/Matrix";
 export { createVector2Proxy, proxifyVector2 } from "./proxy/Vector2";
 export { createVector3Proxy, proxifyVector3 } from "./proxy/Vector3";
 export { createVector4Proxy, proxifyVector4 } from "./proxy/Vector4";

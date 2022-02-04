@@ -21,7 +21,7 @@ describe('Vector3', () => {
       const vector3SoA = createVector3SoA()
       const vector3 = new Vector3(1,2,3)
   
-      proxifyVector3(vector3SoA, id, vector3)
+      proxifyVector3(vector3, vector3SoA, id)
   
       // inherits initial values
       assert(vector3SoA.x[id] === 1)
@@ -79,7 +79,7 @@ describe('Vector3', () => {
       const vector3AoS = createVector3AoS()
       const vector3 = new Vector3(1,2,3)
 
-      proxifyVector3(vector3AoS, id, vector3)
+      proxifyVector3(vector3, vector3AoS[id])
 
       // inherits initial values
       assert(vector3AoS[id][0] === 1)
@@ -106,7 +106,7 @@ describe('Vector3', () => {
     it('should create a new proxified Vector3', () => {
       const id = 1
       const vector3AoS = createVector3AoS()
-      const vector3 = createVector3Proxy(vector3AoS, id).set(1,2,3)
+      const vector3 = createVector3Proxy(vector3AoS[id]).set(1,2,3)
 
       // inherits initial values
       assert(vector3AoS[id][0] === 1)

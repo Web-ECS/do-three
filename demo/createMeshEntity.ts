@@ -2,20 +2,15 @@ import { proxifyQuaternion, proxifyVector3 } from '../src/index'
 import * as THREE from 'three'
 import { Transform } from './Transform'
 
-let idCount = 0
-
-type MeshEntity = THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial> & { eid: number }
-
 export const createMeshEntity = (
   geometry = new THREE.BoxGeometry(100,100,100),
   material = new THREE.MeshBasicMaterial({wireframe:true})
-): MeshEntity => {
-  const mesh = new THREE.Mesh(geometry,material) as MeshEntity
-  mesh.eid = idCount++
+): THREE.Mesh => {
+  const mesh = new THREE.Mesh(geometry,material)
 
-  proxifyVector3(Transform.position, mesh.eid, mesh.position)
-  proxifyVector3(Transform.scale, mesh.eid, mesh.scale)
-  proxifyQuaternion(Transform.quaternion, mesh.eid, mesh.quaternion)
+  proxifyVector3(mesh.position, Transform.position, mesh.id)
+  proxifyVector3(mesh.scale, Transform.scale, mesh.id)
+  proxifyQuaternion(mesh.quaternion, Transform.quaternion, mesh.id)
 
   return mesh
 }

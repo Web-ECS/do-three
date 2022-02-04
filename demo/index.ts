@@ -22,9 +22,9 @@ window.addEventListener('resize', () => {
 
 const mesh = createMeshEntity()
 
-Transform.position.x[mesh.eid] = -50
-Transform.position.y[mesh.eid] = -50
-Transform.position.z[mesh.eid] = -50
+Transform.position.x[mesh.id] = -50
+Transform.position.y[mesh.id] = -50
+Transform.position.z[mesh.id] = -50
 
 scene.add(mesh)
 
@@ -37,19 +37,19 @@ const update = () => {
   delta = (performance.now() - then) / 1000
   t+=delta
 
-  Transform.position.x[mesh.eid] += Math.cos(t) * delta * 100
-  Transform.position.y[mesh.eid] += Math.sin(t) * delta * 100
-  Transform.position.z[mesh.eid] += Math.sin(t) * delta * 100
+  Transform.position.x[mesh.id] += Math.cos(t) * delta * 100
+  Transform.position.y[mesh.id] += Math.sin(t) * delta * 100
+  Transform.position.z[mesh.id] += Math.sin(t) * delta * 100
 
-  Transform.scale.x[mesh.eid] += Math.sin(t) * delta
-  Transform.scale.y[mesh.eid] += Math.sin(t) * delta
-  Transform.scale.z[mesh.eid] += Math.sin(t) * delta
+  Transform.scale.x[mesh.id] += Math.sin(t) * delta
+  Transform.scale.y[mesh.id] += Math.sin(t) * delta
+  Transform.scale.z[mesh.id] += Math.sin(t) * delta
 
-  Transform.rotation.x[mesh.eid] += 0.005
-  Transform.rotation.y[mesh.eid] += 0.005
-  Transform.rotation.z[mesh.eid] += 0.005
+  Transform.rotation.x[mesh.id] += 0.005
+  Transform.rotation.y[mesh.id] += 0.005
+  Transform.rotation.z[mesh.id] += 0.005
 
-  setQuaternionFromEulerSoA(Transform.quaternion, Transform.rotation, mesh.eid)
+  setQuaternionFromEulerSoA(Transform.quaternion, Transform.rotation, mesh.id)
 
   renderer.render(scene,camera)
 
