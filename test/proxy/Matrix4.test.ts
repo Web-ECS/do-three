@@ -1,6 +1,6 @@
 import assert from "assert"
 import { Matrix4 } from "three"
-import { createMatrix4Proxy, proxifyMatrix4 } from "../src/Matrix4"
+import { createMatrix4Proxy, proxifyMatrix4 } from "../../src/index"
 
 const stride = 16
 const createMatrix4AoS = (n=10) => Array(n)

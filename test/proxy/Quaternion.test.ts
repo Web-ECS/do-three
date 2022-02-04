@@ -1,6 +1,6 @@
 import assert from "assert"
 import { Quaternion } from "three"
-import { createQuaternionProxy, proxifyQuaternion } from "../src/Quaternion"
+import { createQuaternionProxy, proxifyQuaternion } from "../../src/index"
 
 const createQuaternionSoA = (n=10) => ({
   x: new Float32Array(n),

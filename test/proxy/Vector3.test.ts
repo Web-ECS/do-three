@@ -1,6 +1,6 @@
 import assert from "assert"
 import { Vector3 } from "three"
-import { createVector3Proxy, proxifyVector3 } from "../src/Vector3"
+import { createVector3Proxy, proxifyVector3 } from "../../src/index"
 
 const createVector3SoA = (n=10) => ({
   x: new Float32Array(n),
