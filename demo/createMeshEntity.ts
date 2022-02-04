@@ -1,38 +1,21 @@
 import { proxifyQuaternion, proxifyVector3 } from '../src/index'
 import * as THREE from 'three'
+import { Transform } from './Transform'
 
 let idCount = 0
 
-const n = 100
-const Transform = {
-  position: {
-    x: new Float32Array(n),
-    y: new Float32Array(n),
-    z: new Float32Array(n),
-  },
-  scale: {
-    x: new Float32Array(n),
-    y: new Float32Array(n),
-    z: new Float32Array(n),
-  },
-  quaternion: {
-    x: new Float32Array(n),
-    y: new Float32Array(n),
-    w: new Float32Array(n),
-    z: new Float32Array(n),
-  },
-}
+type MeshEntity = THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial> & { eid: number }
 
 export const createMeshEntity = (
   geometry = new THREE.BoxGeometry(100,100,100),
   material = new THREE.MeshBasicMaterial({wireframe:true})
-): THREE.Mesh => {
-  const mesh = new THREE.Mesh(geometry,material)
-  const id = idCount++
+): MeshEntity => {
+  const mesh = new THREE.Mesh(geometry,material) as MeshEntity
+  mesh.eid = idCount++
 
-  proxifyVector3(Transform.position, id, mesh.position)
-  proxifyVector3(Transform.scale, id, mesh.scale)
-  proxifyQuaternion(Transform.quaternion, id, mesh.quaternion)
+  proxifyVector3(Transform.position, mesh.eid, mesh.position)
+  proxifyVector3(Transform.scale, mesh.eid, mesh.scale)
+  proxifyQuaternion(Transform.quaternion, mesh.eid, mesh.quaternion)
 
   return mesh
 }
