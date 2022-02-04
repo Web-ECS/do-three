@@ -11,8 +11,6 @@ export type Vector4SoA = {
   w: Float32Array
 }
 
-export type RotationSoA = Vector3SoA
-
 export type QuaternionSoA = Vector4SoA
 
 export type TransformSoA = {
