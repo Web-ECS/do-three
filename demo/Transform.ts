@@ -11,7 +11,6 @@ export const Transform: TransformSoA = {
     x: new Float32Array(n),
     y: new Float32Array(n),
     z: new Float32Array(n),
-    order: new Int8Array(n),
   },
   scale: {
     x: new Float32Array(n),
