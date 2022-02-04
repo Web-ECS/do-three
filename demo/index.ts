@@ -1,7 +1,7 @@
 import { createMeshEntity } from "./createMeshEntity";
 import * as THREE from 'three'
 import { Transform } from "./Transform";
-import { setQuaternionFromEuler } from "./../src/util/setQuaternionFromEuler";
+import { setQuaternionFromEuler } from "./../src";
 
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 )
 camera.position.z = 1000
