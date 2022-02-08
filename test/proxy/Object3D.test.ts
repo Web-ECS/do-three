@@ -1,7 +1,7 @@
 import assert from 'assert'
 import { EulerSoA } from '../../src/proxy/Euler'
 import { createObject3DProxy, proxifyObject3D } from '../../src/proxy/Object3D'
-import { Object3DSoA } from '../../src/type/Object3D'
+import { Object3DStore } from '../../src/type/Object3D'
 
 const createMatrix4AoA = (n=10) => {
   const stride = 16
@@ -30,7 +30,7 @@ const createVector3SoA = (n=10) => ({
   z: new Float32Array(n),
 })
 
-const createObject3DSoA = (n=10): Object3DSoA => ({
+const createObject3DSoA = (n=10): Object3DStore => ({
 
   position: createVector3SoA(n),
   rotation: createEulerSoA(n),

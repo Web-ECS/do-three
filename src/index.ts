@@ -1,3 +1,4 @@
+export { createObject3DProxy, proxifyObject3D } from "./proxy/Object3D";
 export { createMatrix3Proxy, createMatrix4Proxy, proxifyMatrix3, proxifyMatrix4 } from "./proxy/Matrix";
 export { createVector2Proxy, proxifyVector2 } from "./proxy/Vector2";
 export { createVector3Proxy, proxifyVector3 } from "./proxy/Vector3";

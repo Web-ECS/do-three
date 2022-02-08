@@ -1,6 +1,6 @@
-import { createMeshEntity } from "./createMeshEntity";
+import { createObject3DEntity } from "./createObject3DEntity";
 import * as THREE from 'three'
-import { Transform } from "./Transform";
+import { object3DStore } from "./Object3DStore";
 import { setQuaternionFromEulerSoA } from "./../src";
 
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 )
@@ -20,13 +20,13 @@ window.addEventListener('resize', () => {
 })
 
 
-const mesh = createMeshEntity()
+const obj3d = createObject3DEntity()
 
-Transform.position.x[mesh.id] = -50
-Transform.position.y[mesh.id] = -50
-Transform.position.z[mesh.id] = -50
+object3DStore.position.x[obj3d.eid] = -50
+object3DStore.position.y[obj3d.eid] = -50
+object3DStore.position.z[obj3d.eid] = -50
 
-scene.add(mesh)
+scene.add(obj3d)
 
 let t = 0
 let then = 0
@@ -37,19 +37,19 @@ const update = () => {
   delta = (performance.now() - then) / 1000
   t+=delta
 
-  Transform.position.x[mesh.id] += Math.cos(t) * delta * 100
-  Transform.position.y[mesh.id] += Math.sin(t) * delta * 100
-  Transform.position.z[mesh.id] += Math.sin(t) * delta * 100
+  object3DStore.position.x[obj3d.eid] += Math.cos(t) * delta * 100
+  object3DStore.position.y[obj3d.eid] += Math.sin(t) * delta * 100
+  object3DStore.position.z[obj3d.eid] += Math.sin(t) * delta * 100
 
-  Transform.scale.x[mesh.id] += Math.sin(t) * delta
-  Transform.scale.y[mesh.id] += Math.sin(t) * delta
-  Transform.scale.z[mesh.id] += Math.sin(t) * delta
+  object3DStore.scale.x[obj3d.eid] += Math.sin(t) * delta
+  object3DStore.scale.y[obj3d.eid] += Math.sin(t) * delta
+  object3DStore.scale.z[obj3d.eid] += Math.sin(t) * delta
 
-  Transform.rotation.x[mesh.id] += 0.005
-  Transform.rotation.y[mesh.id] += 0.005
-  Transform.rotation.z[mesh.id] += 0.005
+  object3DStore.rotation.x[obj3d.eid] += 0.005
+  object3DStore.rotation.y[obj3d.eid] += 0.005
+  object3DStore.rotation.z[obj3d.eid] += 0.005
 
-  setQuaternionFromEulerSoA(Transform.quaternion, Transform.rotation, mesh.id)
+  setQuaternionFromEulerSoA(object3DStore.quaternion, object3DStore.rotation, obj3d.eid)
 
   renderer.render(scene,camera)
 

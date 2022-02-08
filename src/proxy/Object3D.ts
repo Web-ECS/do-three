@@ -1,15 +1,13 @@
 import { Object3D } from 'three'
 import { proxifyVector3, Vector3SoA } from './Vector3'
-import { Object3DProxy, Object3DSoA, Object3DSoAoA } from '../type/Object3D'
+import { Object3DProxy, Object3DStore } from '../type/Object3D'
 import { EulerSoA, proxifyEuler } from './Euler'
 import { proxifyQuaternion } from '..'
 import { QuaternionSoA } from './Quaternion'
 
 const { defineProperties } = Object
 
-export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoA): Object3DProxy
-export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoAoA): Object3DProxy
-export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoA | Object3DSoAoA): Object3DProxy {
+export function proxifyObject3D (obj: Object3DProxy, store: Object3DStore): Object3DProxy {
 
   store.id[obj.eid] = obj.id
   store.matrixAutoUpdate[obj.eid] = obj.matrixAutoUpdate ? 1 : 0
@@ -157,8 +155,8 @@ export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoA | Object
   })
 }
 
-export const createObject3DProxy = (store: Object3DSoA | Object3DSoAoA, eid: number): Object3DProxy => {
+export const createObject3DProxy = (store: Object3DStore, eid: number): Object3DProxy => {
   const obj = new Object3D() as Object3DProxy
   obj.eid = eid
-  return Array.isArray(store.position) ? proxifyObject3D(obj, store as Object3DSoAoA) : proxifyObject3D(obj, store as Object3DSoA)
+  return proxifyObject3D(obj, store)
 }
