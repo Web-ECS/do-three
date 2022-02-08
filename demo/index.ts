@@ -1,6 +1,6 @@
 import { createObject3DEntity } from "./createObject3DEntity";
 import * as THREE from 'three'
-import { object3DStore } from "./Object3DStore";
+import { Object3DStore } from "./Object3DStore";
 import { setQuaternionFromEulerSoA } from "./../src";
 
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 )
@@ -22,9 +22,9 @@ window.addEventListener('resize', () => {
 
 const obj3d = createObject3DEntity()
 
-object3DStore.position.x[obj3d.eid] = -50
-object3DStore.position.y[obj3d.eid] = -50
-object3DStore.position.z[obj3d.eid] = -50
+Object3DStore.position.x[obj3d.eid] = -50
+Object3DStore.position.y[obj3d.eid] = -50
+Object3DStore.position.z[obj3d.eid] = -50
 
 scene.add(obj3d)
 
@@ -38,19 +38,19 @@ const update = () => {
   t+=delta
   then = performance.now()
 
-  object3DStore.position.x[obj3d.eid] += Math.cos(t) * delta * 100
-  object3DStore.position.y[obj3d.eid] += Math.sin(t) * delta * 100
-  object3DStore.position.z[obj3d.eid] += Math.sin(t) * delta * 100
+  Object3DStore.position.x[obj3d.eid] += Math.cos(t) * delta * 100
+  Object3DStore.position.y[obj3d.eid] += Math.sin(t) * delta * 100
+  Object3DStore.position.z[obj3d.eid] += Math.sin(t) * delta * 100
 
-  object3DStore.scale.x[obj3d.eid] += Math.sin(t) * delta
-  object3DStore.scale.y[obj3d.eid] += Math.sin(t) * delta
-  object3DStore.scale.z[obj3d.eid] += Math.sin(t) * delta
+  Object3DStore.scale.x[obj3d.eid] += Math.sin(t) * delta
+  Object3DStore.scale.y[obj3d.eid] += Math.sin(t) * delta
+  Object3DStore.scale.z[obj3d.eid] += Math.sin(t) * delta
 
-  object3DStore.rotation.x[obj3d.eid] += 0.005
-  object3DStore.rotation.y[obj3d.eid] += 0.005
-  object3DStore.rotation.z[obj3d.eid] += 0.005
+  Object3DStore.rotation.x[obj3d.eid] += 0.005
+  Object3DStore.rotation.y[obj3d.eid] += 0.005
+  Object3DStore.rotation.z[obj3d.eid] += 0.005
 
-  setQuaternionFromEulerSoA(object3DStore.quaternion, object3DStore.rotation, obj3d.eid)
+  setQuaternionFromEulerSoA(Object3DStore.quaternion, Object3DStore.rotation, obj3d.eid)
 
   renderer.render(scene,camera)
 

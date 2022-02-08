@@ -3,6 +3,7 @@
     "incremental": true,
     "target": "es2017",
     /*"rootDir": "test",*/
+    "outDir": "dist",
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,
