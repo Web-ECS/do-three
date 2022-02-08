@@ -8,3 +8,10 @@ export type TransformSoA = {
   scale: Vector3SoA
   quaternion: QuaternionSoA
 }
+
+export type TransformSoAoA = {
+  position: Float32Array[]
+  rotation: Float32Array[]
+  scale: Float32Array[]
+  quaternion: Float32Array[]
+}

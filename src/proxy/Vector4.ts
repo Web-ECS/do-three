@@ -18,38 +18,38 @@ export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4S
     store[2] = vector4.z
     store[3] = vector4.w
     return defineProperties(vector4, {
-      _eid: { value: entity },
-      _store: { value: store },
+      eid: { value: entity },
+      store: { value: store },
       x: {
         get() {
-          return this._store[0]
+          return this.store[0]
         },
         set(n) {
-          return (this._store[0] = n)
+          return (this.store[0] = n)
         }
       },
       y: {
         get() {
-          return this._store[1]
+          return this.store[1]
         },
         set(n) {
-          return (this._store[1] = n)
+          return (this.store[1] = n)
         }
       },
       z: {
         get() {
-          return this._store[2]
+          return this.store[2]
         },
         set(n) {
-          return (this._store[2] = n)
+          return (this.store[2] = n)
         }
       },
       w: {
         get() {
-          return this._store[3]
+          return this.store[3]
         },
         set(n) {
-          return (this._store[3] = n)
+          return (this.store[3] = n)
         }
       },
     })
@@ -60,38 +60,38 @@ export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4S
     store.z[entity] = vector4.z
     store.w[entity] = vector4.w
     return defineProperties(vector4, {
-      _eid: { value: entity },
-      _store: { value: store },
+      eid: { value: entity },
+      store: { value: store },
       x: {
         get() {
-          return this._store.x[this._eid]
+          return this.store.x[this.eid]
         },
         set(n) {
-          return (this._store.x[this._eid] = n)
+          return (this.store.x[this.eid] = n)
         }
       },
       y: {
         get() {
-          return this._store.y[this._eid]
+          return this.store.y[this.eid]
         },
         set(n) {
-          return (this._store.y[this._eid] = n)
+          return (this.store.y[this.eid] = n)
         }
       },
       z: {
         get() {
-          return this._store.z[this._eid]
+          return this.store.z[this.eid]
         },
         set(n) {
-          return (this._store.z[this._eid] = n)
+          return (this.store.z[this.eid] = n)
         }
       },
       w: {
         get() {
-          return this._store.w[this._eid]
+          return this.store.w[this.eid]
         },
         set(n) {
-          return (this._store.w[this._eid] = n)
+          return (this.store.w[this.eid] = n)
         }
       },
     })

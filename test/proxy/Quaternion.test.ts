@@ -10,7 +10,7 @@ const createQuaternionSoA = (n=10) => ({
 })
 
 const stride = 4
-const createQuaternionAoS = (n=10) => Array(n)
+const createQuaternionAoA = (n=10) => Array(n)
   .fill(new Float32Array(n*stride))
   .map((store, i) => store.subarray(i*stride, i*stride+stride))
 
@@ -84,35 +84,35 @@ describe('Quaternion', () => {
     })
   })
 
-  describe('AoS', () => {
-    it('should proxify existing Quaternion object to Quaternion AoS', () => {
+  describe('AoA', () => {
+    it('should proxify existing Quaternion object to Quaternion AoA', () => {
       const id = 1
-      const quaternionAoS = createQuaternionAoS()
+      const quaternionAoA = createQuaternionAoA()
       const quaternion = new Quaternion(1,2,3,4)
 
-      proxifyQuaternion(quaternion, quaternionAoS[id])
+      proxifyQuaternion(quaternion, quaternionAoA[id])
 
       // inherits initial values
-      assert(quaternionAoS[id][0] === 1)
-      assert(quaternionAoS[id][1] === 2)
-      assert(quaternionAoS[id][2] === 3)
-      assert(quaternionAoS[id][3] === 4)
+      assert(quaternionAoA[id][0] === 1)
+      assert(quaternionAoA[id][1] === 2)
+      assert(quaternionAoA[id][2] === 3)
+      assert(quaternionAoA[id][3] === 4)
 
-      // persists changes from object to AoS
+      // persists changes from object to AoA
       quaternion.x = 4
       quaternion.y = 5
       quaternion.z = 6
       quaternion.w = 7
-      assert(quaternionAoS[id][0] === 4)
-      assert(quaternionAoS[id][1] === 5)
-      assert(quaternionAoS[id][2] === 6)
-      assert(quaternionAoS[id][3] === 7)
+      assert(quaternionAoA[id][0] === 4)
+      assert(quaternionAoA[id][1] === 5)
+      assert(quaternionAoA[id][2] === 6)
+      assert(quaternionAoA[id][3] === 7)
 
-      // persists changes from AoS to object
-      quaternionAoS[id][0] = 1
-      quaternionAoS[id][1] = 2
-      quaternionAoS[id][2] = 3
-      quaternionAoS[id][3] = 4
+      // persists changes from AoA to object
+      quaternionAoA[id][0] = 1
+      quaternionAoA[id][1] = 2
+      quaternionAoA[id][2] = 3
+      quaternionAoA[id][3] = 4
       assert(quaternion.x === 1)
       assert(quaternion.y === 2)
       assert(quaternion.z === 3)
@@ -121,30 +121,30 @@ describe('Quaternion', () => {
 
     it('should create a new proxified Quaternion', () => {
       const id = 1
-      const quaternionAoS = createQuaternionAoS()
-      const quaternion = createQuaternionProxy(quaternionAoS[id]).set(1,2,3,4)
+      const quaternionAoA = createQuaternionAoA()
+      const quaternion = createQuaternionProxy(quaternionAoA[id]).set(1,2,3,4)
 
       // inherits initial values
-      assert(quaternionAoS[id][0] === 1)
-      assert(quaternionAoS[id][1] === 2)
-      assert(quaternionAoS[id][2] === 3)
-      assert(quaternionAoS[id][3] === 4)
+      assert(quaternionAoA[id][0] === 1)
+      assert(quaternionAoA[id][1] === 2)
+      assert(quaternionAoA[id][2] === 3)
+      assert(quaternionAoA[id][3] === 4)
 
-      // persists changes from object to AoS
+      // persists changes from object to AoA
       quaternion.x = 4
       quaternion.y = 5
       quaternion.z = 6
       quaternion.w = 7
-      assert(quaternionAoS[id][0] === 4)
-      assert(quaternionAoS[id][1] === 5)
-      assert(quaternionAoS[id][2] === 6)
-      assert(quaternionAoS[id][3] === 7)
+      assert(quaternionAoA[id][0] === 4)
+      assert(quaternionAoA[id][1] === 5)
+      assert(quaternionAoA[id][2] === 6)
+      assert(quaternionAoA[id][3] === 7)
 
-      // persists changes from AoS to object
-      quaternionAoS[id][0] = 1
-      quaternionAoS[id][1] = 2
-      quaternionAoS[id][2] = 3
-      quaternionAoS[id][3] = 4
+      // persists changes from AoA to object
+      quaternionAoA[id][0] = 1
+      quaternionAoA[id][1] = 2
+      quaternionAoA[id][2] = 3
+      quaternionAoA[id][3] = 4
       assert(quaternion.x === 1)
       assert(quaternion.y === 2)
       assert(quaternion.z === 3)

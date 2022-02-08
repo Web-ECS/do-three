@@ -4,18 +4,18 @@ A library to help integrate Three.js with data-oriented design structures.
 
 ## Features
 
-Supported data structures so far:
+Supported Three.js data structures so far:
 |||
 |-|-|
 |Vector2|Quaternion|
 |Vector3|Matrix3|
 |Vector4|Matrix4|
 
-## SoA Example
+## Structure of Arrays Example
 
 ```typescript
 import assert from 'assert'
-import { proxifyVector3 } from '@webecs/SoA-three'
+import { proxifyVector3 } from '@webecs/dod-three'
 import * as THREE from 'three'
 
 const n = 100
@@ -52,16 +52,16 @@ assert(mesh.position.z === 6) // true
 
 ```
 
-## AoS Example
+## Array of Arrays Example
 
 ```typescript
 import assert from 'assert'
-import { proxifyVector3 } from '@webecs/SoA-three'
+import { proxifyVector3 } from '@webecs/dod-three'
 import * as THREE from 'three'
 
 const n = 100
 const stride = 3
-const PositionAoS = Array(n)
+const PositionAoA = Array(n)
   .fill(new Float32Array(n*stride))
   .map((store,i) => store.subarray(i*stride, i*stride+stride))
 
@@ -71,19 +71,19 @@ const mesh = new THREE.Mesh(
   new THREE.MeshBasicMaterial( { wireframe: true } )
 )
 
-proxifyVector3(mesh.position, PositionAoS[id])
+proxifyVector3(mesh.position, PositionAoA[id])
 
 mesh.position.x = 1
 mesh.position.y = 2
 mesh.position.z = 3
 
-assert(PositionAoS[id][0] === 1) // true
-assert(PositionAoS[id][1] === 2) // true
-assert(PositionAoS[id][2] === 3) // true
+assert(PositionAoA[id][0] === 1) // true
+assert(PositionAoA[id][1] === 2) // true
+assert(PositionAoA[id][2] === 3) // true
 
-PositionAoS[id][0] = 4
-PositionAoS[id][1] = 5
-PositionAoS[id][2] = 6
+PositionAoA[id][0] = 4
+PositionAoA[id][1] = 5
+PositionAoA[id][2] = 6
 
 assert(mesh.position.x === 4) // true
 assert(mesh.position.y === 5) // true

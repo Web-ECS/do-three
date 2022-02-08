@@ -14,22 +14,22 @@ export function proxifyVector2 (vector2: Vector2, store: Float32Array | Vector2S
     store[0] = vector2.x
     store[1] = vector2.y
     return defineProperties(vector2, {
-      _eid: { value: entity },
-      _store: { value: store },
+      eid: { value: entity },
+      store: { value: store },
       x: {
         get() {
-          return this._store[0]
+          return this.store[0]
         },
         set(n) {
-          return (this._store[0] = n)
+          return (this.store[0] = n)
         }
       },
       y: {
         get() {
-          return this._store[1]
+          return this.store[1]
         },
         set(n) {
-          return (this._store[1] = n)
+          return (this.store[1] = n)
         }
       },
     })
@@ -38,22 +38,22 @@ export function proxifyVector2 (vector2: Vector2, store: Float32Array | Vector2S
     store.x[entity] = vector2.x
     store.y[entity] = vector2.y
     return defineProperties(vector2, {
-      _eid: { value: entity },
-      _store: { value: store },
+      eid: { value: entity },
+      store: { value: store },
       x: {
         get() {
-          return this._store.x[this._eid]
+          return this.store.x[this.eid]
         },
         set(n) {
-          return (this._store.x[this._eid] = n)
+          return (this.store.x[this.eid] = n)
         }
       },
       y: {
         get() {
-          return this._store.y[this._eid]
+          return this.store.y[this.eid]
         },
         set(n) {
-          return (this._store.y[this._eid] = n)
+          return (this.store.y[this.eid] = n)
         }
       },
     })

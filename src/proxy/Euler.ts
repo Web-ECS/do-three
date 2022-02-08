@@ -20,46 +20,46 @@ export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, enti
     store[2] = euler.z
     store[3] = EulerOrder.indexOf(euler.order)
     return defineProperties(euler, {
-      _eid: { value: entity },
-      _store: { value: store },
+      eid: { value: entity },
+      store: { value: store },
       x: {
         get() {
-          return this._store[0]
+          return this.store[0]
         },
         set(n) {
           (euler as any)._x = n
           euler._onChangeCallback()
-          return (this._store[0] = n)
+          return (this.store[0] = n)
         }
       },
       y: {
         get() {
-          return this._store[1]
+          return this.store[1]
         },
         set(n) {
           (euler as any)._y = n
           euler._onChangeCallback()
-          return (this._store[1] = n)
+          return (this.store[1] = n)
         }
       },
       z: {
         get() {
-          return this._store[2]
+          return this.store[2]
         },
         set(n) {
           (euler as any)._z = n
           euler._onChangeCallback()
-          return (this._store[2] = n)
+          return (this.store[2] = n)
         }
       },
       order: {
         get() {
-          return this._store[3]
+          return this.store[3]
         },
         set(n) {
           (euler as any)._order = EulerOrder[n]
           euler._onChangeCallback()
-          return (this._store[3] = n)
+          return (this.store[3] = n)
         }
       },
     })
@@ -70,38 +70,38 @@ export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, enti
     store.z[entity] = euler.z
     store.order[entity] = EulerOrder.indexOf(euler.order)
     return defineProperties(euler, {
-      _eid: { value: entity },
-      _store: { value: store },
+      eid: { value: entity },
+      store: { value: store },
       x: {
         get() {
-          return this._store.x[this._eid]
+          return this.store.x[this.eid]
         },
         set(n) {
-          return (this._store.x[this._eid] = n)
+          return (this.store.x[this.eid] = n)
         }
       },
       y: {
         get() {
-          return this._store.y[this._eid]
+          return this.store.y[this.eid]
         },
         set(n) {
-          return (this._store.y[this._eid] = n)
+          return (this.store.y[this.eid] = n)
         }
       },
       z: {
         get() {
-          return this._store.z[this._eid]
+          return this.store.z[this.eid]
         },
         set(n) {
-          return (this._store.z[this._eid] = n)
+          return (this.store.z[this.eid] = n)
         }
       },
       order: {
         get() {
-          return this._store.order[this._eid]
+          return this.store.order[this.eid]
         },
         set(n) {
-          return (this._store.order[this._eid] = n)
+          return (this.store.order[this.eid] = n)
         }
       },
     })

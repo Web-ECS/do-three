@@ -8,7 +8,7 @@ const createVector2SoA = (n=10) => ({
 })
 
 const stride = 2
-const createVector2AoS = (n=10) => Array(n)
+const createVector2AoA = (n=10) => Array(n)
   .fill(new Float32Array(n*stride))
   .map((store, i) => store.subarray(i*stride, i*stride+stride))
 
@@ -62,49 +62,49 @@ describe('Vector2', () => {
     })
   })
 
-  describe('AoS', () => {
-    it('should proxify existing Vector2 object to Vector2 AoS', () => {
+  describe('AoA', () => {
+    it('should proxify existing Vector2 object to Vector2 AoA', () => {
       const id = 1
-      const vector2AoS = createVector2AoS()
+      const vector2AoA = createVector2AoA()
       const vector2 = new Vector2(1,2)
 
-      proxifyVector2(vector2, vector2AoS[id])
+      proxifyVector2(vector2, vector2AoA[id])
 
       // inherits initial values
-      assert(vector2AoS[id][0] === 1)
-      assert(vector2AoS[id][1] === 2)
+      assert(vector2AoA[id][0] === 1)
+      assert(vector2AoA[id][1] === 2)
 
-      // persists changes from object to AoS
+      // persists changes from object to AoA
       vector2.x = 3
       vector2.y = 4
-      assert(vector2AoS[id][0] === 3)
-      assert(vector2AoS[id][1] === 4)
+      assert(vector2AoA[id][0] === 3)
+      assert(vector2AoA[id][1] === 4)
 
-      // persists changes from AoS to object
-      vector2AoS[id][0] = 1
-      vector2AoS[id][1] = 2
+      // persists changes from AoA to object
+      vector2AoA[id][0] = 1
+      vector2AoA[id][1] = 2
       assert(vector2.x === 1)
       assert(vector2.y === 2)
     })
 
     it('should create a new proxified Vector2', () => {
       const id = 1
-      const vector2AoS = createVector2AoS()
-      const vector2 = createVector2Proxy(vector2AoS[id]).set(1,2)
+      const vector2AoA = createVector2AoA()
+      const vector2 = createVector2Proxy(vector2AoA[id]).set(1,2)
 
       // inherits initial values
-      assert(vector2AoS[id][0] === 1)
-      assert(vector2AoS[id][1] === 2)
+      assert(vector2AoA[id][0] === 1)
+      assert(vector2AoA[id][1] === 2)
 
-      // persists changes from object to AoS
+      // persists changes from object to AoA
       vector2.x = 3
       vector2.y = 4
-      assert(vector2AoS[id][0] === 3)
-      assert(vector2AoS[id][1] === 4)
+      assert(vector2AoA[id][0] === 3)
+      assert(vector2AoA[id][1] === 4)
 
-      // persists changes from AoS to object
-      vector2AoS[id][0] = 1
-      vector2AoS[id][1] = 2
+      // persists changes from AoA to object
+      vector2AoA[id][0] = 1
+      vector2AoA[id][1] = 2
       assert(vector2.x === 1)
       assert(vector2.y === 2)
     })

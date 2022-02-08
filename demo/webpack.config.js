@@ -9,10 +9,10 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname,'dist'),
-    publicPath: '/dist/'
+    publicPath: '/'
   },
   resolve: {
-    extensions: ['.ts']
+    extensions: ['.ts', '.js', '.json']
   },
   module: {
     rules: [

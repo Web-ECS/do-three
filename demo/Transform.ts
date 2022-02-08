@@ -1,4 +1,4 @@
-import { TransformSoA } from "../src/types/TransformSoA"
+import { TransformSoA } from "../src/type/Transform"
 
 const n = 100
 export const Transform: TransformSoA = {

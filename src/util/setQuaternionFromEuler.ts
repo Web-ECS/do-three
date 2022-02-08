@@ -66,7 +66,7 @@ export const setQuaternionFromEulerSoA = (quaternion: QuaternionSoA, rotation: V
   }
 }
 
-export const setQuaternionFromEulerAoS = (quaternion: Float32Array, rotation: Float32Array, order: string = 'XYZ' ) => {
+export const setQuaternionFromEulerAoA = (quaternion: Float32Array, rotation: Float32Array, order: string = 'XYZ' ) => {
 
   const [x, y, z] = rotation
 
