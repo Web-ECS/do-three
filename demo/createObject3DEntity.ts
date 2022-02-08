@@ -3,7 +3,8 @@ import * as THREE from 'three'
 import { Object3DProxy } from '../src/type/Object3D'
 import { object3DStore } from './Object3DStore'
 
-let eidCount = 0
+// start eid at 1, eid 0 acts as noop entity
+let eidCount = 1
 
 export const createObject3DEntity = (
   geometry = new THREE.BoxGeometry(100,100,100),
