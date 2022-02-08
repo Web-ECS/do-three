@@ -1,15 +1,18 @@
 // http://www.mathworks.com/matlabcentral/fileexchange/20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/content/SpinCalc.m
 
+import { EulerSoA } from "../proxy/Euler"
 import { QuaternionSoA } from "../proxy/Quaternion"
-import { Vector3SoA } from "../proxy/Vector3"
 
 const { sin, cos } = Math
 
-export const setQuaternionFromEulerSoA = (quaternion: QuaternionSoA, rotation: Vector3SoA, eid: number, order: string = 'XYZ') => {
+const EulerOrder = [ 'XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX' ]
+
+export const setQuaternionFromEulerSoA = (quaternion: QuaternionSoA, rotation: EulerSoA, eid: number) => {
 
   const x = rotation.x[eid]
   const y = rotation.y[eid]
   const z = rotation.z[eid]
+  const order = EulerOrder[rotation.order[eid]]
 
   const c1 = cos( x / 2 )
   const c2 = cos( y / 2 )
@@ -66,9 +69,10 @@ export const setQuaternionFromEulerSoA = (quaternion: QuaternionSoA, rotation: V
   }
 }
 
-export const setQuaternionFromEulerAoA = (quaternion: Float32Array, rotation: Float32Array, order: string = 'XYZ' ) => {
+export const setQuaternionFromEulerAoA = (quaternion: Float32Array, rotation: Float32Array) => {
 
-  const [x, y, z] = rotation
+  const [x, y, z, o] = rotation
+  const order = EulerOrder[o]
 
   const c1 = cos( x / 2 )
   const c2 = cos( y / 2 )
