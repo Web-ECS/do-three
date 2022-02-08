@@ -36,6 +36,7 @@ const update = () => {
   
   delta = (performance.now() - then) / 1000
   t+=delta
+  then = performance.now()
 
   object3DStore.position.x[obj3d.eid] += Math.cos(t) * delta * 100
   object3DStore.position.y[obj3d.eid] += Math.sin(t) * delta * 100
@@ -53,7 +54,6 @@ const update = () => {
 
   renderer.render(scene,camera)
 
-  then = performance.now()
 }
 
 update()
