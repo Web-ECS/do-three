@@ -1,7 +1,7 @@
 {
-  "name": "SoA-three",
+  "name": "@webecs/do-three",
   "version": "0.0.1",
-  "description": "SoA + Three.js integrations",
+  "description": "Data-oriented Three.js integrations",
   "main": "index.js",
   "scripts": {
     "test": "ts-mocha -p tsconfig.json ./test/**/*.test.ts",
