@@ -2,7 +2,8 @@
   "name": "@webecs/do-three",
   "version": "0.0.2",
   "description": "Data-oriented Three.js integrations",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "ts-mocha -p tsconfig.json ./test/**/*.test.ts",
     "build": "tsc -p tsconfig-build.json",
