@@ -77,6 +77,8 @@ export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, enti
           return this.store.x[this.eid]
         },
         set(n) {
+          (euler as any)._x = n
+          euler._onChangeCallback()
           return (this.store.x[this.eid] = n)
         }
       },
@@ -85,6 +87,8 @@ export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, enti
           return this.store.y[this.eid]
         },
         set(n) {
+          (euler as any)._y = n
+          euler._onChangeCallback()
           return (this.store.y[this.eid] = n)
         }
       },
@@ -93,6 +97,8 @@ export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, enti
           return this.store.z[this.eid]
         },
         set(n) {
+          (euler as any)._z = n
+          euler._onChangeCallback()
           return (this.store.z[this.eid] = n)
         }
       },

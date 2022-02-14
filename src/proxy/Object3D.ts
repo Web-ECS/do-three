@@ -2,7 +2,7 @@ import { Object3D } from 'three'
 import { proxifyVector3, Vector3SoA } from './Vector3'
 import { Object3DProxy, Object3DSoA, Object3DSoAoA } from '../type/Object3D'
 import { EulerSoA, proxifyEuler } from './Euler'
-import { proxifyQuaternion } from '..'
+import { proxifyMatrix4, proxifyQuaternion } from '..'
 import { QuaternionSoA } from './Quaternion'
 
 const { defineProperties } = Object
@@ -30,6 +30,8 @@ export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoA | Object
   
   if (Array.isArray(store.quaternion)) proxifyQuaternion(obj.quaternion, store.quaternion[obj.eid])
   else proxifyQuaternion(obj.quaternion, store.quaternion as QuaternionSoA, obj.eid)
+  
+  proxifyMatrix4(obj.matrix, store.matrix[obj.eid])
 
   obj._add = obj.add
   obj.add = function (child: Object3DProxy) {
@@ -40,6 +42,8 @@ export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoA | Object
       this.store.prevSibling[child.eid] = lastChild.eid
       this.store.nextSibling[lastChild.eid] = child.eid
     }
+    const firstChild = (this.children[0] as Object3DProxy)
+    if (firstChild) this.store.firstChild[this.eid] = firstChild.eid
     return this
   }
 
@@ -56,6 +60,8 @@ export function proxifyObject3D (obj: Object3DProxy, store: Object3DSoA | Object
     this.store.nextSibling[child.eid] = 0
     this.store.prevSibling[child.eid] = 0
     this._remove(child)
+    const firstChild = (this.children[0] as Object3DProxy)
+    if (firstChild) this.store.firstChild[this.eid] = firstChild.eid
     return this
   }
 
