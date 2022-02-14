@@ -107,7 +107,7 @@ const systemBrute = () => {
     obj.rotation.z = Object3DStore.rotation.z[eid]
 
     Object3DStore.matrix[eid].set(obj.matrix.elements)
-    // obj.updateMatrix()
+    obj.updateMatrix()
   }
 }
 
@@ -122,8 +122,9 @@ const update = () => {
   then = performance.now()
 
   systemSoA()
-  // systemObj()
   systemBrute()
+
+  // systemObj()
 
   // scene.updateMatrixWorld()
 

@@ -21,7 +21,7 @@ export const createObject3DEntity = (
   // @ts-ignore
   // proxifyObject3D(mesh, Object3DStore)
   // proxifyVector3(mesh.position, Object3DStore.position, mesh.eid)
-  // mesh.matrixAutoUpdate = false
+  mesh.matrixAutoUpdate = false
   // obj3d.add(mesh)
   // return obj3d
   return (mesh as unknown as Object3DProxy)
