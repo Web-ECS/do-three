@@ -174,8 +174,8 @@ export const createObject3DProxy = (store: Object3DSoA | Object3DSoAoA, eid: num
   return obj
 }
 
-const _addedEvent = { type: 'added' }
-const _removedEvent = { type: 'removed' }
+export const _addedEvent = { type: 'added' }
+export const _removedEvent = { type: 'removed' }
 
 export class Object3DProxy extends THREE.Object3D {
   store: Object3DSoA | Object3DSoAoA

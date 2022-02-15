@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Object3DEntity, Object3DSoA, Object3DSoAoA, proxifyQuaternion, proxifyVector3, QuaternionSoA, Vector3SoA } from '..'
 import { EulerSoA, proxifyEuler } from './Euler'
-import { Object3DProxy } from './Object3D'
+import { Object3DProxy, _addedEvent, _removedEvent } from './Object3D'
 
 export class MeshProxy extends THREE.Mesh {
     store: Object3DSoA | Object3DSoAoA
