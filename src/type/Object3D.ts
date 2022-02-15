@@ -1,5 +1,6 @@
 import { TransformSoA, TransformSoAoA } from "./Transform";
-import { Object3D } from 'three'
+import { MeshProxy } from "../proxy/Mesh";
+import { Object3DProxy } from "../proxy/Object3D";
 
 export type Object3DBase = {
   id: Uint32Array | Int32Array,
@@ -25,12 +26,4 @@ export type Object3DSoA = TransformSoA & Object3DBase
 
 export type Object3DSoAoA = TransformSoAoA & Object3DBase
 
-
-export type Object3DProxy = Object3D & { 
-  eid: number
-  store: Object3DSoA | Object3DSoAoA
-  _add: Function
-  _remove: Function
-  _removeFromParent: Function
-  _clear: Function
-}
+export type Object3DEntity = Object3DProxy | MeshProxy

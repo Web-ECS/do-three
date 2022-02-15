@@ -39,6 +39,7 @@ const createObject3DSoA = (n=10): Object3DSoA => ({
 
   id: new Int32Array(n),
   parent: new Int32Array(n),
+  firstChild: new Int32Array(n),
   prevSibling: new Int32Array(n),
   nextSibling: new Int32Array(n),
   up: createVector3SoA(n),

@@ -8,6 +8,33 @@ export type Vector3SoA = {
   z: Float32Array
 }
 
+export class Vector3Proxy {
+  store: Vector3SoA
+  eid: number
+  constructor(store: Vector3SoA, eid: number) {
+    this.store = store
+    this.eid = eid
+  }
+  get x() {
+    return this.store.x[this.eid]
+  }
+  set x(v) {
+    this.store.x[this.eid] = v
+  }
+  get y() {
+    return this.store.y[this.eid]
+  }
+  set y(v) {
+    this.store.y[this.eid] = v
+  }
+  get z() {
+    return this.store.z[this.eid]
+  }
+  set z(v) {
+    this.store.z[this.eid] = v
+  }
+}
+
 export function proxifyVector3 (vector3: Vector3, store: Vector3SoA, entity: number): Vector3
 export function proxifyVector3 (vector3: Vector3, store: Float32Array): Vector3
 export function proxifyVector3 (vector3: Vector3, store: Float32Array | Vector3SoA, entity?: number): Vector3 {

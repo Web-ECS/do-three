@@ -3,18 +3,14 @@ import * as THREE from 'three'
 import { Object3DStore } from "./Object3DStore";
 import { 
   updateMatrixSoA, 
-  // updateMatrixWorldSoA,
   setQuaternionFromEulerSoA,
-  Object3DProxy, 
-  // updateMatrixWorldSoA,
+  Object3DEntity, 
 } from "./../src";
 
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 )
 camera.position.z = 1000
 
 const scene = new THREE.Scene()
-
-// scene.autoUpdate = false
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } )
 renderer.setPixelRatio( window.devicePixelRatio )
@@ -27,10 +23,11 @@ window.addEventListener('resize', () => {
   renderer.setSize( window.innerWidth, window.innerHeight )
 })
 
-const objects: Object3DProxy[] = []
+const objects: Object3DEntity[] = []
 const entities: number[] = []
 
-for (let i = 0, n = 10000; i < n; i++) {
+const n = 10000
+for (let i = 0; i < n; i++) {
   const obj3d = createObject3DEntity()
 
   objects.push(obj3d)
@@ -67,28 +64,6 @@ const systemSoA = () => {
   }
 }
 
-const systemObj = () => {
-  for (let i = 0; i < entities.length; i++) {
-    const obj = objects[i]
-
-    const rnd = Math.random()
-    
-    obj.position.x += Math.cos(rnd + t) * delta * 100
-    obj.position.y += Math.sin(rnd + t) * delta * 100
-    obj.position.z += Math.sin(rnd + t) * delta * 100
-    
-    obj.scale.x += Math.sin(rnd + t) * delta
-    obj.scale.y += Math.sin(rnd + t) * delta
-    obj.scale.z += Math.sin(rnd + t) * delta
-    
-    obj.rotation.x += rnd + 0.005
-    obj.rotation.y += rnd + 0.005
-    obj.rotation.z += rnd + 0.005
-    
-    obj.updateMatrix()
-  }
-}
-
 const systemBrute = () => {
   for (let i = 0; i < objects.length; i++) {
     const obj = objects[i]
@@ -111,6 +86,28 @@ const systemBrute = () => {
   }
 }
 
+const systemObj = () => {
+  for (let i = 0; i < entities.length; i++) {
+    const obj = objects[i]
+
+    const rnd = Math.random()
+    
+    obj.position.x += Math.cos(rnd + t) * delta * 100
+    obj.position.y += Math.sin(rnd + t) * delta * 100
+    obj.position.z += Math.sin(rnd + t) * delta * 100
+    
+    obj.scale.x += Math.sin(rnd + t) * delta
+    obj.scale.y += Math.sin(rnd + t) * delta
+    obj.scale.z += Math.sin(rnd + t) * delta
+    
+    obj.rotation.x += rnd + 0.005
+    obj.rotation.y += rnd + 0.005
+    obj.rotation.z += rnd + 0.005
+    
+    obj.updateMatrix()
+  }
+}
+
 let t = 0
 let then = 0
 let delta = 0
@@ -122,14 +119,8 @@ const update = () => {
   then = performance.now()
 
   systemSoA()
-  systemBrute()
-
-  // systemObj()
-
-  // scene.updateMatrixWorld()
 
   renderer.render(scene,camera)
-
 }
 
 update()

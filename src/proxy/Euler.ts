@@ -11,6 +11,39 @@ export type EulerSoA = {
 
 const EulerOrder = [ 'XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX' ]
 
+export class EulerProxy {
+  store: EulerSoA
+  eid: number
+  constructor(store: EulerSoA, eid: number) {
+    this.store = store
+    this.eid = eid
+  }
+  get x() {
+    return this.store.x[this.eid]
+  }
+  set x(v) {
+    this.store.x[this.eid] = v
+  }
+  get y() {
+    return this.store.y[this.eid]
+  }
+  set y(v) {
+    this.store.y[this.eid] = v
+  }
+  get z() {
+    return this.store.z[this.eid]
+  }
+  set z(v) {
+    this.store.z[this.eid] = v
+  }
+  get order() {
+    return this.store.order[this.eid]
+  }
+  set order(v) {
+    this.store.order[this.eid] = v
+  }
+}
+
 export function proxifyEuler (euler: Euler, store: EulerSoA, entity: number): Euler
 export function proxifyEuler (euler: Euler, store: Float32Array): Euler
 export function proxifyEuler (euler: Euler, store: Float32Array | EulerSoA, entity?: number): Euler {

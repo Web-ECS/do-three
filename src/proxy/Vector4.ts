@@ -9,6 +9,39 @@ export type Vector4SoA = {
   w: Float32Array
 }
 
+export class Vector4Proxy {
+  store: Vector4SoA
+  eid: number
+  constructor(store: Vector4SoA, eid: number) {
+    this.store = store
+    this.eid = eid
+  }
+  get x() {
+    return this.store.x[this.eid]
+  }
+  set x(v) {
+    this.store.x[this.eid] = v
+  }
+  get y() {
+    return this.store.y[this.eid]
+  }
+  set y(v) {
+    this.store.y[this.eid] = v
+  }
+  get z() {
+    return this.store.z[this.eid]
+  }
+  set z(v) {
+    this.store.z[this.eid] = v
+  }
+  get w() {
+    return this.store.w[this.eid]
+  }
+  set w(v) {
+    this.store.w[this.eid] = v
+  }
+}
+
 export function proxifyVector4 (vector4: Vector4, store: Vector4SoA, entity: number): Vector4
 export function proxifyVector4 (vector4: Vector4, store: Float32Array): Vector4
 export function proxifyVector4 (vector4: Vector4, store: Float32Array | Vector4SoA, entity?: number): Vector4 {
