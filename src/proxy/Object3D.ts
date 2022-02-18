@@ -1,8 +1,8 @@
 import { proxifyVector3, Vector3SoA } from './Vector3'
 import { Object3DEntity, Object3DSoA, Object3DSoAoA } from '../type/Object3D'
 import { EulerSoA, proxifyEuler } from './Euler'
-import { proxifyMatrix4, proxifyQuaternion } from '..'
-import { QuaternionSoA } from './Quaternion'
+import { proxifyMatrix4 } from './Matrix'
+import { proxifyQuaternion, QuaternionSoA } from './Quaternion'
 import { MeshProxy } from './Mesh'
 import * as THREE from 'three'
 
@@ -181,7 +181,7 @@ export class Object3DProxy extends THREE.Object3D {
   store: Object3DSoA | Object3DSoAoA
   eid: number
   //@ts-ignore
-  children: Object3DProxy[] & MeshProxy[]
+  children: (Object3DProxy | MeshProxy)[]
   constructor(store: Object3DSoA | Object3DSoAoA, eid: number) {
     super()
     
@@ -206,109 +206,36 @@ export class Object3DProxy extends THREE.Object3D {
   }
 
   _add( object: any ) {
-
-		if ( arguments.length > 1 ) {
-
-			for ( let i = 0; i < arguments.length; i ++ ) {
-
-				this.add( arguments[ i ] );
-
-			}
-
-			return this;
-
-		}
-
-		if ( object === this ) {
-
-			console.error( 'THREE.Object3D.add: object can\'t be added as a child of itself.', object );
-			return this;
-
-		}
-
-		if ( object && object.isObject3D ) {
-
-			if ( object.parent !== null ) {
-
-				object.parent.remove( object );
-
-			}
-
-			object.parent = this;
-			this.children.push( object );
-
-			object.dispatchEvent( _addedEvent );
-
-		} else {
-
-			console.error( 'THREE.Object3D.add: object not an instance of THREE.Object3D.', object );
-
-		}
-
-		return this;
-
+    THREE.Object3D.prototype.add.call(this, object)
 	}
 
 	_remove( object: any ) {
-
-		if ( arguments.length > 1 ) {
-
-			for ( let i = 0; i < arguments.length; i ++ ) {
-
-				this.remove( arguments[ i ] );
-
-			}
-
-			return this;
-
-		}
-
-		const index = this.children.indexOf( object );
-
-		if ( index !== - 1 ) {
-
-			object.parent = null;
-			this.children.splice( index, 1 );
-
-			object.dispatchEvent( _removedEvent );
-
-		}
-
-		return this;
-
+    THREE.Object3D.prototype.remove.call(this, object)
 	}
 
 	_removeFromParent() {
-
-		const parent = this.parent;
-
-		if ( parent !== null ) {
-
-			parent.remove( this as any );
-
-		}
-
-		return this;
-
+    THREE.Object3D.prototype.removeFromParent.call(this)
 	}
 
-  add (child: any) {
+  //@ts-ignore
+  add (child: Object3DEntity) {
     this._add(child)
     this.store.parent[child.eid] = this.eid
-    const lastChild = this.children[this.children.length-2] as Object3DEntity
+    const lastChild = this.children[this.children.length-2]
     if (lastChild !== undefined) {
       this.store.prevSibling[child.eid] = lastChild.eid
       this.store.nextSibling[lastChild.eid] = child.eid
     }
-    const firstChild = (this.children[0] as Object3DEntity)
+    const firstChild = this.children[0]
     if (firstChild) this.store.firstChild[this.eid] = firstChild.eid
     return this
   }
   
-  remove (child: any) {
+  //@ts-ignore
+  remove (child: Object3DEntity) {
     const childIndex = this.children.indexOf(child)
-    const prevChild = this.children[childIndex-1] as Object3DEntity
-    const nextChild = this.children[childIndex+1] as Object3DEntity
+    const prevChild = this.children[childIndex-1]
+    const nextChild = this.children[childIndex+1]
     if (prevChild !== undefined) 
     this.store.nextSibling[prevChild.eid] = nextChild.eid
     if (nextChild !== undefined)
@@ -317,7 +244,7 @@ export class Object3DProxy extends THREE.Object3D {
     this.store.nextSibling[child.eid] = 0
     this.store.prevSibling[child.eid] = 0
     this._remove(child)
-    const firstChild = (this.children[0] as Object3DEntity)
+    const firstChild = this.children[0]
     if (firstChild) this.store.firstChild[this.eid] = firstChild.eid
     return this
   }
@@ -331,7 +258,7 @@ export class Object3DProxy extends THREE.Object3D {
   clear () {
     for ( let i = 0; i < this.children.length; i ++ ) {
       // original logic
-      const object = this.children[i] as Object3DEntity
+      const object = this.children[i]
       object.parent = null
       object.dispatchEvent(_removedEvent)
       // new logic: clear linked list in proxy stores
