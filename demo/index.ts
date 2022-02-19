@@ -118,9 +118,14 @@ const update = () => {
   t+=delta
   then = performance.now()
 
+  console.time()
   systemSoA()
+  // systemBrute()
 
+  // systemObj()
+  
   renderer.render(scene,camera)
+  console.timeEnd()
 }
 
 update()

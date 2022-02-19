@@ -3,6 +3,7 @@ import {
 } from '../src/index'
 import * as THREE from 'three'
 import { Object3DStore } from './Object3DStore'
+import { Mesh } from 'three'
 
 
 // start eid at 1, eid 0 acts as noop entity
@@ -14,7 +15,9 @@ export const createObject3DEntity = (
 ): Object3DEntity => {
   const mesh = new MeshProxy(Object3DStore, eidCount++, geometry, material)
 
-  mesh.visible = true
+  // const mesh = new Mesh(geometry,material) as any
+  // mesh.eid = eidCount++
+
   mesh.matrixAutoUpdate = false
 
   return mesh
