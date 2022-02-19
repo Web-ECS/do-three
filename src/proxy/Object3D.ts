@@ -162,18 +162,6 @@ export function proxifyObject3D (obj: Object3DEntity, store: Object3DSoA | Objec
   })
 }
 
-export const createObject3DProxy = (store: Object3DSoA | Object3DSoAoA, eid: number): Object3DEntity => {
-  const obj = new Object3DProxy(store, eid)
-  
-  // set defaults
-  store.id[obj.eid] = obj.id
-  store.matrixAutoUpdate[obj.eid] = 1
-  store.visible[obj.eid] = 1
-  store.frustumCulled[obj.eid] = 1
-  
-  return obj
-}
-
 export const _addedEvent = { type: 'added' }
 export const _removedEvent = { type: 'removed' }
 
@@ -203,6 +191,12 @@ export class Object3DProxy extends THREE.Object3D {
     if (Array.isArray(this.store.quaternion)) proxifyQuaternion(this.quaternion, this.store.quaternion[this.eid])
     else if (this.store.quaternion) proxifyQuaternion(this.quaternion, this.store.quaternion as QuaternionSoA, this.eid)
     
+    // set defaults to the store
+    if (store.id) store.id[this.eid] = this.id
+    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = 1
+    if (store.visible) store.visible[this.eid] = 1
+    if (store.frustumCulled) store.frustumCulled[this.eid] = 1
+
     if (store.matrixAutoUpdate) this.matrixAutoUpdate = {
       get () { return !!store.matrixAutoUpdate[eid] },
       set (v: boolean) { store.matrixAutoUpdate[eid] = v ? 1 : 0 }
