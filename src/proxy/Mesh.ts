@@ -33,9 +33,9 @@ export class MeshProxy extends THREE.Mesh {
             
         // set defaults to the store
         if (store.id) store.id[this.eid] = this.id
-        if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = 1
-        if (store.visible) store.visible[this.eid] = 1
-        if (store.frustumCulled) store.frustumCulled[this.eid] = 1
+        if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate
+        if (store.visible) store.visible[this.eid] = this.visible
+        if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled
 
         if (store.matrixAutoUpdate) this.matrixAutoUpdate = {
             get () { return !!store.matrixAutoUpdate[eid] },
