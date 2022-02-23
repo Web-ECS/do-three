@@ -1,6 +1,6 @@
 import { Object3DProxy, _addedEvent, _removedEvent } from './Object3D'
 // import { proxifyVector3, Vector3SoA } from './Vector3'
-import { Object3DEntity } from '../type/Object3D'
+import { Object3DEntity, Object3DSoA, Object3DSoAoA } from '../type/Object3D'
 // import { EulerSoA, proxifyEuler } from './Euler'
 // import { proxifyQuaternion, QuaternionSoA } from './Quaternion'
 import * as THREE from 'three'
@@ -9,11 +9,11 @@ import { EulerProxySoA, EulerProxyAoA } from '..'
 import { QuaternionProxySoA, QuaternionProxyAoA } from '..'
 
 export class MeshProxy extends THREE.Mesh {
-  store: any
+  store: Object3DSoA | Object3DSoAoA
   eid: number
   //@ts-ignore
   children: (Object3DProxy | MeshProxy)[]
-  constructor(store: any, eid: number, geometry: THREE.BufferGeometry, material: THREE.Material) {
+  constructor(store: Object3DSoA | Object3DSoAoA, eid: number, geometry: THREE.BufferGeometry, material: THREE.Material) {
     super(geometry, material)
     
     this.store = store
@@ -41,9 +41,7 @@ export class MeshProxy extends THREE.Mesh {
     rotation._onChange( onRotationChange );
     quaternion._onChange( onQuaternionChange );
     
-    //@ts-ignore
     if (Array.isArray(this.store.position)) Object.defineProperty(this, 'position', { value: new Vector3ProxyAoA(this.store.position[eid]) } )
-    //@ts-ignore
     else if (this.store.position) Object.defineProperty(this, 'position', { value: new Vector3ProxySoA(this.store.position, eid) } )
     
     Object.defineProperty(this, 'rotation', { value: rotation })
@@ -59,9 +57,9 @@ export class MeshProxy extends THREE.Mesh {
     
     // set defaults to the store
     if (store.id) store.id[this.eid] = this.id
-    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate
-    if (store.visible) store.visible[this.eid] = this.visible
-    if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled
+    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate ? 1 : 0
+    if (store.visible) store.visible[this.eid] = this.visible ? 1 : 0
+    if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled ? 1 : 0
     
   }
   

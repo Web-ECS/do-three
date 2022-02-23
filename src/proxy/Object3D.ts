@@ -168,11 +168,11 @@ export const _addedEvent = { type: 'added' }
 export const _removedEvent = { type: 'removed' }
 
 export class Object3DProxy extends THREE.Object3D {
-  store: any
+  store: Object3DSoA | Object3DSoAoA
   eid: number
   //@ts-ignore
   children: (Object3DProxy | MeshProxy)[]
-  constructor(store: any, eid: number) {
+  constructor(store: Object3DSoA | Object3DSoAoA, eid: number) {
     super()
     
     this.store = store
@@ -200,9 +200,7 @@ export class Object3DProxy extends THREE.Object3D {
     rotation._onChange( onRotationChange );
     quaternion._onChange( onQuaternionChange );
     
-    //@ts-ignore
     if (Array.isArray(this.store.position)) Object.defineProperty(this, 'position', { value: new Vector3ProxyAoA(this.store.position[eid]) } )
-    //@ts-ignore
     else if (this.store.position) Object.defineProperty(this, 'position', { value: new Vector3ProxySoA(this.store.position, eid) } )
     
     Object.defineProperty(this, 'rotation', { value: rotation })
@@ -218,9 +216,9 @@ export class Object3DProxy extends THREE.Object3D {
     
     // set defaults to the store
     if (store.id) store.id[this.eid] = this.id
-    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate
-    if (store.visible) store.visible[this.eid] = this.visible
-    if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled
+    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate ? 1 : 0
+    if (store.visible) store.visible[this.eid] = this.visible ? 1 : 0
+    if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled ? 1 : 0
   }
   
   _add( object: any ) {
