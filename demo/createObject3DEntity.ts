@@ -5,7 +5,6 @@ import * as THREE from 'three'
 import { Object3DStore } from './Object3DStore'
 import { Mesh } from 'three'
 
-
 // start eid at 1, eid 0 acts as noop entity
 let eidCount = 1
 

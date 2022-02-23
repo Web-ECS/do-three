@@ -109,23 +109,29 @@ const systemObj = () => {
 }
 
 let t = 0
-let then = 0
+let then = performance.now()
 let delta = 0
+let tick = 0
 const update = () => {
   requestAnimationFrame(update)
   
   delta = (performance.now() - then) / 1000
   t+=delta
+
+  tick++
+
+  if (tick % 100 === 0) 
+  console.log('delta', (delta * 1000))
+
   then = performance.now()
 
-  console.time()
-  systemSoA()
+  
+  // systemSoA()
   // systemBrute()
 
-  // systemObj()
+  systemObj()
   
   renderer.render(scene,camera)
-  console.timeEnd()
 }
 
 update()

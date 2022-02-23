@@ -1,8 +1,8 @@
-import { proxifyVector3, Vector3SoA } from './Vector3'
+import { proxifyVector3, Vector3SoA, Vector3ProxySoA, Vector3ProxyAoA } from './Vector3'
 import { Object3DEntity, Object3DSoA, Object3DSoAoA } from '../type/Object3D'
-import { EulerSoA, proxifyEuler } from './Euler'
+import { EulerProxyAoA, EulerProxySoA, EulerSoA, proxifyEuler } from './Euler'
 import { proxifyMatrix4 } from './Matrix'
-import { proxifyQuaternion, QuaternionSoA } from './Quaternion'
+import { proxifyQuaternion, QuaternionProxyAoA, QuaternionProxySoA, QuaternionSoA } from './Quaternion'
 import { MeshProxy } from './Mesh'
 import * as THREE from 'three'
 
@@ -162,6 +162,8 @@ export function proxifyObject3D (obj: Object3DEntity, store: Object3DSoA | Objec
   })
 }
 
+export const createObject3DProxy = (store: any, eid: number) => new Object3DProxy(store, eid)
+
 export const _addedEvent = { type: 'added' }
 export const _removedEvent = { type: 'removed' }
 
@@ -178,59 +180,47 @@ export class Object3DProxy extends THREE.Object3D {
     
     //@ts-ignore
     this.matrix.elements = this.store.matrix[eid]
-    
-    if (Array.isArray(this.store.position)) proxifyVector3(this.position, this.store.position[this.eid])
-    else if (this.store.position) proxifyVector3(this.position, this.store.position as Vector3SoA, this.eid)
-    
-    if (Array.isArray(this.store.scale)) proxifyVector3(this.scale, this.store.scale[this.eid])
-    else if (this.store.scale) proxifyVector3(this.scale, this.store.scale as Vector3SoA, this.eid)
-    
-    if (Array.isArray(this.store.rotation)) proxifyEuler(this.rotation, this.store.rotation[this.eid])
-    else if (this.store.rotation) proxifyEuler(this.rotation, this.store.rotation as EulerSoA, this.eid)
-    
-    if (Array.isArray(this.store.quaternion)) proxifyQuaternion(this.quaternion, this.store.quaternion[this.eid])
-    else if (this.store.quaternion) proxifyQuaternion(this.quaternion, this.store.quaternion as QuaternionSoA, this.eid)
-    
+
+    const rotation = Array.isArray(this.store.rotation) 
+        ? new EulerProxyAoA(this.store.rotation[eid]) 
+        : new EulerProxySoA(this.store.rotation, eid) 
+
+    const quaternion = Array.isArray(this.store.quaternion) 
+        ? new QuaternionProxyAoA(this.store.quaternion[eid]) 
+        : new QuaternionProxySoA(this.store.quaternion, eid)
+
+		function onRotationChange() {
+			quaternion.setFromEuler( rotation, false );
+		}
+
+		function onQuaternionChange() {
+			rotation.setFromQuaternion( quaternion, undefined, false );
+		}
+
+		rotation._onChange( onRotationChange );
+		quaternion._onChange( onQuaternionChange );
+
+    //@ts-ignore
+    if (Array.isArray(this.store.position)) Object.defineProperty(this, 'position', { value: new Vector3ProxyAoA(this.store.position[eid]) } )
+    //@ts-ignore
+    else if (this.store.position) Object.defineProperty(this, 'position', { value: new Vector3ProxySoA(this.store.position, eid) } )
+
+    Object.defineProperty(this, 'rotation', { value: rotation })
+    Object.defineProperty(this, 'quaternion', { value: quaternion })
+        
+		this.visible = true;
+
+		this.castShadow = false;
+		this.receiveShadow = false;
+
+		this.frustumCulled = true;
+		this.renderOrder = 0;
+
     // set defaults to the store
     if (store.id) store.id[this.eid] = this.id
     if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate
     if (store.visible) store.visible[this.eid] = this.visible
     if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled
-
-    if (store.matrixAutoUpdate) this.matrixAutoUpdate = {
-      get () { return !!store.matrixAutoUpdate[eid] },
-      set (v: boolean) { store.matrixAutoUpdate[eid] = v ? 1 : 0 }
-    } as unknown as boolean
-    
-    if (store.matrixWorldNeedsUpdate) this.matrixWorldNeedsUpdate = {
-      get () { return !!store.matrixWorldNeedsUpdate[eid] },
-      set (v: boolean) { store.matrixWorldNeedsUpdate[eid] = v ? 1 : 0 }
-    } as unknown as boolean
-    
-    if (store.visible) this.visible = {
-      get () { return !!store.visible[eid] },
-      set (v: boolean) { store.visible[eid] = v ? 1 : 0 }
-    } as unknown as boolean
-    
-    if (store.castShadow) this.castShadow = {
-      get () { return !!store.castShadow[eid] },
-      set (v: boolean) { store.castShadow[eid] = v ? 1 : 0 }
-    } as unknown as boolean
-    
-    if (store.receiveShadow) this.receiveShadow = {
-      get () { return !!store.receiveShadow[eid] },
-      set (v: boolean) { store.receiveShadow[eid] = v ? 1 : 0 }
-    } as unknown as boolean
-    
-    if (store.frustumCulled) this.frustumCulled = {
-      get () { return !!store.frustumCulled[eid] },
-      set (v: boolean) { store.frustumCulled[eid] = v ? 1 : 0 }
-    } as unknown as boolean
-    
-    if (store.renderOrder) this.renderOrder = {
-      get () { return store.renderOrder[eid] },
-      set (v: number) { store.renderOrder[eid] = v }
-    } as unknown as number
   }
   
   _add( object: any ) {
@@ -298,4 +288,74 @@ export class Object3DProxy extends THREE.Object3D {
     return this
   }
   
+    //@ts-ignore
+    get matrixAutoUpdate() {
+      if (this.store !== undefined)
+      return !!this.store.matrixAutoUpdate[this.eid]
+  }
+  //@ts-ignore
+  set matrixAutoUpdate(v) {
+      if (this.store !== undefined)
+      this.store.matrixAutoUpdate[this.eid] = v ? 1 : 0
+  }
+  //@ts-ignore
+  get matrixWorldNeedsUpdate() {
+      if (this.store !== undefined)
+      return !!this.store.matrixWorldNeedsUpdate[this.eid]
+  }
+  //@ts-ignore
+  set matrixWorldNeedsUpdate(v) {
+      if (this.store !== undefined)
+      this.store.matrixWorldNeedsUpdate[this.eid] = v ? 1 : 0
+  }
+  //@ts-ignore
+  get visible() {
+      if (this.store !== undefined)
+      return !!this.store.visible[this.eid]
+  }
+  //@ts-ignore
+  set visible(v) {
+      if (this.store !== undefined)
+      this.store.visible[this.eid] = v ? 1 : 0
+  }
+  //@ts-ignore
+  get castShadow () {
+      if (this.store !== undefined)
+      return !!this.store.castShadow[this.eid]
+  }
+  //@ts-ignore
+  set castShadow (v) {
+      if (this.store !== undefined)
+      this.store.castShadow[this.eid] = v ? 1 : 0
+  }
+  //@ts-ignore
+  get receiveShadow () {
+      if (this.store !== undefined)
+      return !!this.store.receiveShadow[this.eid]
+  }
+  //@ts-ignore
+  set receiveShadow (v) {
+      if (this.store !== undefined)
+      this.store.receiveShadow[this.eid] = v ? 1 : 0
+  }
+  //@ts-ignore
+  get frustumCulled () {
+      if (this.store !== undefined)
+      return !!this.store.frustumCulled[this.eid]
+  }
+  //@ts-ignore
+  set frustumCulled (v) {
+      if (this.store !== undefined)
+      this.store.frustumCulled[this.eid] = v ? 1 : 0
+  }
+  //@ts-ignore
+  get renderOrder () {
+      if (this.store !== undefined)
+      return this.store.renderOrder[this.eid]
+  }
+  //@ts-ignore
+  set renderOrder (v: number) {
+      if (this.store !== undefined)
+      this.store.renderOrder[this.eid] = v
+  }
 }

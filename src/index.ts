@@ -1,5 +1,6 @@
 export * from "./proxy/Object3D";
 export * from "./proxy/Mesh";
+export * from "./proxy/Euler";
 export * from "./proxy/Matrix";
 export * from "./proxy/Vector2";
 export * from "./proxy/Vector3";
