@@ -180,42 +180,42 @@ export class Object3DProxy extends THREE.Object3D {
     
     //@ts-ignore
     this.matrix.elements = this.store.matrix[eid]
-
+    
     const rotation = Array.isArray(this.store.rotation) 
-        ? new EulerProxyAoA(this.store.rotation[eid]) 
-        : new EulerProxySoA(this.store.rotation, eid) 
-
+    ? new EulerProxyAoA(this.store.rotation[eid]) 
+    : new EulerProxySoA(this.store.rotation, eid) 
+    
     const quaternion = Array.isArray(this.store.quaternion) 
-        ? new QuaternionProxyAoA(this.store.quaternion[eid]) 
-        : new QuaternionProxySoA(this.store.quaternion, eid)
-
-		function onRotationChange() {
-			quaternion.setFromEuler( rotation, false );
-		}
-
-		function onQuaternionChange() {
-			rotation.setFromQuaternion( quaternion, undefined, false );
-		}
-
-		rotation._onChange( onRotationChange );
-		quaternion._onChange( onQuaternionChange );
-
+    ? new QuaternionProxyAoA(this.store.quaternion[eid]) 
+    : new QuaternionProxySoA(this.store.quaternion, eid)
+    
+    function onRotationChange() {
+      quaternion.setFromEuler( rotation, false );
+    }
+    
+    function onQuaternionChange() {
+      rotation.setFromQuaternion( quaternion, undefined, false );
+    }
+    
+    rotation._onChange( onRotationChange );
+    quaternion._onChange( onQuaternionChange );
+    
     //@ts-ignore
     if (Array.isArray(this.store.position)) Object.defineProperty(this, 'position', { value: new Vector3ProxyAoA(this.store.position[eid]) } )
     //@ts-ignore
     else if (this.store.position) Object.defineProperty(this, 'position', { value: new Vector3ProxySoA(this.store.position, eid) } )
-
+    
     Object.defineProperty(this, 'rotation', { value: rotation })
     Object.defineProperty(this, 'quaternion', { value: quaternion })
-        
-		this.visible = true;
-
-		this.castShadow = false;
-		this.receiveShadow = false;
-
-		this.frustumCulled = true;
-		this.renderOrder = 0;
-
+    
+    this.visible = true;
+    
+    this.castShadow = false;
+    this.receiveShadow = false;
+    
+    this.frustumCulled = true;
+    this.renderOrder = 0;
+    
     // set defaults to the store
     if (store.id) store.id[this.eid] = this.id
     if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate
@@ -288,74 +288,74 @@ export class Object3DProxy extends THREE.Object3D {
     return this
   }
   
-    //@ts-ignore
-    get matrixAutoUpdate() {
-      if (this.store !== undefined)
-      return !!this.store.matrixAutoUpdate[this.eid]
+  //@ts-ignore
+  get matrixAutoUpdate() {
+    if (this.store !== undefined)
+    return !!this.store.matrixAutoUpdate[this.eid]
   }
   //@ts-ignore
   set matrixAutoUpdate(v) {
-      if (this.store !== undefined)
-      this.store.matrixAutoUpdate[this.eid] = v ? 1 : 0
+    if (this.store !== undefined)
+    this.store.matrixAutoUpdate[this.eid] = v ? 1 : 0
   }
   //@ts-ignore
   get matrixWorldNeedsUpdate() {
-      if (this.store !== undefined)
-      return !!this.store.matrixWorldNeedsUpdate[this.eid]
+    if (this.store !== undefined)
+    return !!this.store.matrixWorldNeedsUpdate[this.eid]
   }
   //@ts-ignore
   set matrixWorldNeedsUpdate(v) {
-      if (this.store !== undefined)
-      this.store.matrixWorldNeedsUpdate[this.eid] = v ? 1 : 0
+    if (this.store !== undefined)
+    this.store.matrixWorldNeedsUpdate[this.eid] = v ? 1 : 0
   }
   //@ts-ignore
   get visible() {
-      if (this.store !== undefined)
-      return !!this.store.visible[this.eid]
+    if (this.store !== undefined)
+    return !!this.store.visible[this.eid]
   }
   //@ts-ignore
   set visible(v) {
-      if (this.store !== undefined)
-      this.store.visible[this.eid] = v ? 1 : 0
+    if (this.store !== undefined)
+    this.store.visible[this.eid] = v ? 1 : 0
   }
   //@ts-ignore
   get castShadow () {
-      if (this.store !== undefined)
-      return !!this.store.castShadow[this.eid]
+    if (this.store !== undefined)
+    return !!this.store.castShadow[this.eid]
   }
   //@ts-ignore
   set castShadow (v) {
-      if (this.store !== undefined)
-      this.store.castShadow[this.eid] = v ? 1 : 0
+    if (this.store !== undefined)
+    this.store.castShadow[this.eid] = v ? 1 : 0
   }
   //@ts-ignore
   get receiveShadow () {
-      if (this.store !== undefined)
-      return !!this.store.receiveShadow[this.eid]
+    if (this.store !== undefined)
+    return !!this.store.receiveShadow[this.eid]
   }
   //@ts-ignore
   set receiveShadow (v) {
-      if (this.store !== undefined)
-      this.store.receiveShadow[this.eid] = v ? 1 : 0
+    if (this.store !== undefined)
+    this.store.receiveShadow[this.eid] = v ? 1 : 0
   }
   //@ts-ignore
   get frustumCulled () {
-      if (this.store !== undefined)
-      return !!this.store.frustumCulled[this.eid]
+    if (this.store !== undefined)
+    return !!this.store.frustumCulled[this.eid]
   }
   //@ts-ignore
   set frustumCulled (v) {
-      if (this.store !== undefined)
-      this.store.frustumCulled[this.eid] = v ? 1 : 0
+    if (this.store !== undefined)
+    this.store.frustumCulled[this.eid] = v ? 1 : 0
   }
   //@ts-ignore
   get renderOrder () {
-      if (this.store !== undefined)
-      return this.store.renderOrder[this.eid]
+    if (this.store !== undefined)
+    return this.store.renderOrder[this.eid]
   }
   //@ts-ignore
   set renderOrder (v: number) {
-      if (this.store !== undefined)
-      this.store.renderOrder[this.eid] = v
+    if (this.store !== undefined)
+    this.store.renderOrder[this.eid] = v
   }
 }
