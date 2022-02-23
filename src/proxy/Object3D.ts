@@ -5,6 +5,7 @@ import { proxifyMatrix4 } from './Matrix'
 import { proxifyQuaternion, QuaternionProxyAoA, QuaternionProxySoA, QuaternionSoA } from './Quaternion'
 import { MeshProxy } from './Mesh'
 import * as THREE from 'three'
+import { Object3D } from 'three'
 
 const { defineProperties } = Object
 
@@ -206,6 +207,7 @@ export class Object3DProxy extends THREE.Object3D {
     Object.defineProperty(this, 'rotation', { value: rotation })
     Object.defineProperty(this, 'quaternion', { value: quaternion })
     
+    this.matrixAutoUpdate = Object3D.DefaultMatrixAutoUpdate
     this.visible = true;
     
     this.castShadow = false;
@@ -213,12 +215,6 @@ export class Object3DProxy extends THREE.Object3D {
     
     this.frustumCulled = true;
     this.renderOrder = 0;
-    
-    // set defaults to the store
-    if (store.id) store.id[this.eid] = this.id
-    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate ? 1 : 0
-    if (store.visible) store.visible[this.eid] = this.visible ? 1 : 0
-    if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled ? 1 : 0
   }
   
   _add( object: any ) {

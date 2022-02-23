@@ -126,10 +126,10 @@ const update = () => {
   then = performance.now()
 
   
-  // systemSoA()
+  systemSoA()
   // systemBrute()
 
-  systemObj()
+  // systemObj()
   
   renderer.render(scene,camera)
 }

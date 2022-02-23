@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import { Vector3ProxySoA, Vector3ProxyAoA } from '..'
 import { EulerProxySoA, EulerProxyAoA } from '..'
 import { QuaternionProxySoA, QuaternionProxyAoA } from '..'
+import { Object3D } from 'three'
 
 export class MeshProxy extends THREE.Mesh {
   store: Object3DSoA | Object3DSoAoA
@@ -47,6 +48,8 @@ export class MeshProxy extends THREE.Mesh {
     Object.defineProperty(this, 'rotation', { value: rotation })
     Object.defineProperty(this, 'quaternion', { value: quaternion })
     
+    // reset defaults
+    this.matrixAutoUpdate = Object3D.DefaultMatrixAutoUpdate
     this.visible = true;
     
     this.castShadow = false;
@@ -54,13 +57,6 @@ export class MeshProxy extends THREE.Mesh {
     
     this.frustumCulled = true;
     this.renderOrder = 0;
-    
-    // set defaults to the store
-    if (store.id) store.id[this.eid] = this.id
-    if (store.matrixAutoUpdate) store.matrixAutoUpdate[this.eid] = this.matrixAutoUpdate ? 1 : 0
-    if (store.visible) store.visible[this.eid] = this.visible ? 1 : 0
-    if (store.frustumCulled) store.frustumCulled[this.eid] = this.frustumCulled ? 1 : 0
-    
   }
   
   _add( object: any ) {
