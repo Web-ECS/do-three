@@ -12,6 +12,6 @@ export * from './type/Transform'
 export * from "./util/setQuaternionFromEuler";
 export * from './util/composeMatrix'
 export * from './util/multiplyMatrices'
-export * from './util/traverseChildren'
+export * from './util/traverse'
 export * from './util/updateMatrix'
 export * from './util/updateMatrixWorld'
