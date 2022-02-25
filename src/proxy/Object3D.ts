@@ -327,4 +327,9 @@ export class Object3DProxy extends THREE.Object3D {
     this.children.length = 0
     return this
   }
+
+  traverse(callback: (object: Object3DEntity) => any): void {
+    //@ts-ignore
+    Object3D.prototype.traverse.call(this, callback)
+  }
 }
