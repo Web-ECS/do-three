@@ -3,6 +3,8 @@
   "version": "0.0.9",
   "description": "Data-oriented Three.js integrations",
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "type": "module",
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "ts-mocha -p tsconfig.json ./test/**/*.test.ts",
@@ -11,8 +13,8 @@
   },
   "author": "Nathaniel Martin",
   "license": "MPL-2.0",
-  "dependencies": {
-    "three": "^0.137.5"
+  "peerDependencies": {
+    "three": "^0.138.0"
   },
   "devDependencies": {
     "@types/mocha": "^9.1.0",
