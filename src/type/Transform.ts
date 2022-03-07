@@ -1,6 +1,6 @@
-import { EulerSoA } from "../proxy/Euler";
-import { QuaternionSoA } from "../proxy/Quaternion";
-import { Vector3SoA } from "../proxy/Vector3";
+import { EulerSoA } from "../proxy/math/Euler";
+import { QuaternionSoA } from "../proxy/math/Quaternion";
+import { Vector3SoA } from "../proxy/math/Vector3";
 
 export type TransformSoA = {
   position: Vector3SoA

@@ -1,26 +1,35 @@
-import { _addedEvent, _removedEvent } from './Object3D'
-// import { proxifyVector3, Vector3SoA } from './Vector3'
+import { Vector3ProxySoA, Vector3ProxyAoA } from './math/Vector3'
 import { Object3DEntity, Object3DSoA, Object3DSoAoA } from '../type/Object3D'
-// import { EulerSoA, proxifyEuler } from './Euler'
-// import { proxifyQuaternion, QuaternionSoA } from './Quaternion'
+import { EulerProxyAoA, EulerProxySoA } from './math/Euler'
+import { QuaternionProxyAoA, QuaternionProxySoA } from './math/Quaternion'
 import * as THREE from 'three'
-import { Vector3ProxySoA, Vector3ProxyAoA, Object3DProxy } from '..'
-import { EulerProxySoA, EulerProxyAoA } from '..'
-import { QuaternionProxySoA, QuaternionProxyAoA } from '..'
 import { Object3D } from 'three'
 
-export class MeshProxy extends THREE.Mesh {
+export const _addedEvent = { type: 'added' }
+export const _removedEvent = { type: 'removed' }
+
+type Constructor = new (...args: any[]) => {};
+
+export const Object3DProxyMixin = <TBase extends Constructor>(Base: TBase) => 
+class extends Base {
   store: Object3DSoA | Object3DSoAoA
   eid: number
   //@ts-ignore
   parent: (Object3DProxy | MeshProxy) | null
   //@ts-ignore
   children: Object3DEntity[]
-  constructor(store: Object3DSoA | Object3DSoAoA, eid: number, geometry: THREE.BufferGeometry, material: THREE.Material) {
-    super(geometry, material)
-    
+  isObject3DEntity: true;
+  constructor(...args: any[]) {
+    super(...args.slice(2))
+
+    const store = args[0] as Object3DSoA | Object3DSoAoA
+    const eid = args[1] as number
+
     this.store = store
     this.eid = eid
+
+    this.parent = null
+    this.children = []
     
     //@ts-ignore
     this.matrix.elements = this.store.matrix[eid]
@@ -28,10 +37,12 @@ export class MeshProxy extends THREE.Mesh {
     const position = Array.isArray(this.store.position) 
       ? new Vector3ProxyAoA(this.store.position[eid])
       : new Vector3ProxySoA(this.store.position, eid)
-    
+
     const scale = Array.isArray(this.store.scale) 
       ? new Vector3ProxyAoA(this.store.scale[eid])
       : new Vector3ProxySoA(this.store.scale, eid)
+
+    scale.set(1,1,1)
     
     const rotation = Array.isArray(this.store.rotation) 
       ? new EulerProxyAoA(this.store.rotation[eid])
@@ -58,43 +69,7 @@ export class MeshProxy extends THREE.Mesh {
       rotation: { value: rotation },
       quaternion: { value: quaternion },
     })
-
-    if (this.store.matrixAutoUpdate) Object.defineProperty(this, 'matrixAutoUpdate', {
-      get () { return !!this.store.matrixAutoUpdate[this.eid] },
-      set (v) { this.store.matrixAutoUpdate[this.eid] = v ? 1 : 0 }
-    })
     
-    if (this.store.matrixWorldNeedsUpdate) Object.defineProperty(this, 'matrixWorldNeedsUpdate', {
-      get () { return !!this.store.matrixWorldNeedsUpdate[this.eid] },
-      set (v) { this.store.matrixWorldNeedsUpdate[this.eid] = v ? 1 : 0 }
-    })
-    
-    if (this.store.visible) Object.defineProperty(this, 'visible', {
-      get () { return !!this.store.visible[this.eid] },
-      set (v) { this.store.visible[this.eid] = v ? 1 : 0 }
-    })
-    
-    if (this.store.castShadow) Object.defineProperty(this, 'castShadow', {
-      get () { return !!this.store.castShadow[this.eid] },
-      set (v) { this.store.castShadow[this.eid] = v ? 1 : 0 }
-    })
-    
-    if (this.store.receiveShadow) Object.defineProperty(this, 'receiveShadow', {
-      get () { return !!this.store.receiveShadow[this.eid] },
-      set (v) { this.store.receiveShadow[this.eid] = v ? 1 : 0 }
-    })
-    
-    if (this.store.frustumCulled) Object.defineProperty(this, 'frustumCulled', {
-      get () { return !!this.store.frustumCulled[this.eid] },
-      set (v) { this.store.frustumCulled[this.eid] = v ? 1 : 0 }
-    })
-    
-    if (this.store.renderOrder) Object.defineProperty(this, 'renderOrder', {
-      get () { return !!this.store.renderOrder[this.eid] },
-      set (v) { this.store.renderOrder[this.eid] = v }
-    })
-
-    // reset defaults
     this.matrixAutoUpdate = Object3D.DefaultMatrixAutoUpdate
     this.visible = true
     
@@ -103,6 +78,8 @@ export class MeshProxy extends THREE.Mesh {
     
     this.frustumCulled = true
     this.renderOrder = 0
+
+    this.isObject3DEntity = true;
   }
   
   _add( object: any ) {
@@ -117,7 +94,6 @@ export class MeshProxy extends THREE.Mesh {
     THREE.Object3D.prototype.removeFromParent.call(this)
   }
   
-  //@ts-ignore
   add (child: Object3DEntity) {
     this._add(child)
     this.store.parent[child.eid] = this.eid
@@ -131,7 +107,6 @@ export class MeshProxy extends THREE.Mesh {
     return this
   }
   
-  //@ts-ignore
   remove (child: Object3DEntity) {
     const childIndex = this.children.indexOf(child)
     const prevChild = this.children[childIndex-1]
@@ -160,7 +135,7 @@ export class MeshProxy extends THREE.Mesh {
       // original logic
       const object = this.children[i]
       object.parent = null
-      object.dispatchEvent(_removedEvent)
+      Object3D.prototype.dispatchEvent.call(this, _removedEvent)
       // new logic: clear linked list in proxy stores
       this.store.parent[object.eid] = 0
       this.store.prevSibling[object.eid] = 0
@@ -173,5 +148,69 @@ export class MeshProxy extends THREE.Mesh {
   traverse(callback: (object: Object3DEntity) => any): void {
     //@ts-ignore
     Object3D.prototype.traverse.call(this, callback)
+  }
+
+  get matrixAutoUpdate() {
+    if (this.store !== undefined)
+      return !!this.store.matrixAutoUpdate[this.eid]
+    return false
+  }
+  set matrixAutoUpdate(v) {
+    if (this.store !== undefined)
+    this.store.matrixAutoUpdate[this.eid] = v ? 1 : 0
+  }
+  get matrixWorldNeedsUpdate() {
+    if (this.store !== undefined)
+      return !!this.store.matrixWorldNeedsUpdate[this.eid]
+    return false
+  }
+  set matrixWorldNeedsUpdate(v) {
+    if (this.store !== undefined)
+    this.store.matrixWorldNeedsUpdate[this.eid] = v ? 1 : 0
+  }
+  get visible() {
+    if (this.store !== undefined)
+      return !!this.store.visible[this.eid]
+    return true
+  }
+  set visible(v) {
+    if (this.store !== undefined)
+    this.store.visible[this.eid] = v ? 1 : 0
+  }
+  get castShadow () {
+    if (this.store !== undefined)
+      return !!this.store.castShadow[this.eid]
+    return false
+  }
+  set castShadow (v) {
+    if (this.store !== undefined)
+    this.store.castShadow[this.eid] = v ? 1 : 0
+  }
+  get receiveShadow () {
+    if (this.store !== undefined)
+      return !!this.store.receiveShadow[this.eid]
+    return false
+  }
+  set receiveShadow (v) {
+    if (this.store !== undefined)
+    this.store.receiveShadow[this.eid] = v ? 1 : 0
+  }
+  get frustumCulled () {
+    if (this.store !== undefined)
+      return !!this.store.frustumCulled[this.eid]
+    return false
+  }
+  set frustumCulled (v) {
+    if (this.store !== undefined)
+    this.store.frustumCulled[this.eid] = v ? 1 : 0
+  }
+  get renderOrder () {
+    if (this.store !== undefined)
+      return this.store.renderOrder[this.eid]
+    return 0
+  }
+  set renderOrder (v: number) {
+    if (this.store !== undefined)
+    this.store.renderOrder[this.eid] = v
   }
 }

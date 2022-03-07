@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { EulerSoA } from '../../src/proxy/Euler'
-import { createObject3DProxy } from '../../src/proxy/Object3D'
+import { createObject3DProxy } from '../../src/proxy/core/Object3D'
 import { Object3DSoA } from '../../src/type/Object3D'
 
 const createMatrix4AoA = (n=10) => {

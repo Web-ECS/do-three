@@ -1,6 +1,6 @@
 import { TransformSoA, TransformSoAoA } from "./Transform";
-import { MeshProxy } from "../proxy/Mesh";
-import { Object3DProxy } from "../proxy/Object3D";
+import { MeshProxy } from "../proxy/objects/Mesh";
+import { Object3DProxy } from "../proxy/core/Object3D";
 
 export type Object3DBase = {
   id: Uint32Array | Int32Array,
