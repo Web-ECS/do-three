@@ -1,6 +1,6 @@
 {
   "name": "@webecs/do-three",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Data-oriented Three.js integrations",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
